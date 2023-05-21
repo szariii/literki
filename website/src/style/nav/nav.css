@@ -1,7 +1,8 @@
+@use "../variables" as *;
 .navbar {
   height: 80px;
   width: 100%;
-  background-color: #61D2E2;
+  background-color: blueColor;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -11,5 +12,5 @@
 .navbar__button {
   width: 10px;
   height: 10px;
-  background-color: #FFBB5A;
+  background-color: #ffbb5a;
 }

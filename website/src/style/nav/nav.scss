@@ -1,19 +1,23 @@
+//#61D2E2 #FFBB5A #C36B84
+@use "../variables" as *;
+
 .navbar {
   height: 80px;
   width: 100%;
-  background-color: #61D2E2;
+  background-color: $blue-color;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px;
+  padding: 5px 20px;
 
   &__button {
     width: 10px;
     height: 10px;
-    background-color: #FFBB5A;
+    background-color: $orange-color;
   }
 
   &__title {
+
   }
 
   &__container {
