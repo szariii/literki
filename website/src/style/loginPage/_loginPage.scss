@@ -1,0 +1,15 @@
+@use "../variables" as *;
+
+.loginPage {
+  flex: 1 1 auto;
+  background-color: $light-blue-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  &__button {
+    border-radius: 20px;
+    height: 2rem;
+  }
+}

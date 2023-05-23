@@ -5,14 +5,14 @@ import LoginPage from "./pages/LoginPage";
 import Nav from "./components/nav/Nav";
 
 //Style
-import "./style/app/app.scss"
+import "./style/app/_app.scss"
 
 const App = () => {
   return (
-    <>
+    <div className="appContainer">
       <Nav />
       <LoginPage />
-    </>
+    </div>
   );
 };
 
