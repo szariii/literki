@@ -8,9 +8,7 @@ const LoginPage = () => {
 
   return (
     <div className="loginPage">
-      <div className="loginPage__component">
         {showLoginPage === true ? <LoginComponent /> : <RegisterComponent />}
-      </div>
       <div className="loginPage__buttons">
         {showLoginPage === true ? (
           <button

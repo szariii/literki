@@ -1,4 +1,6 @@
-import { useState } from "react";
+import "../../style/loginPage/_loginComponent.scss";
+
+import { ChangeEvent, useState } from "react";
 
 const LoginComponent = () => {
   const [loginData, setLoginData] = useState<LoginData>({
@@ -7,23 +9,41 @@ const LoginComponent = () => {
   });
 
   return (
-    <div className="loginComponent" >
-      <p>LoginComponent</p>
-      {/* <h1>Sad</h1>
-      <h2>Sad</h2>
-      <h3>Sad</h3>
-      <h4>Sad</h4>
-      <h5>Sad</h5>
-      <h6>Sad</h6>
-      <p>Sad</p> */}
-      <div className="loginComponent__inputs" >
-        <div>
-          <h2>nick</h2>
-          <input type="text" />
+    <>
+      <div className="inputsContainer">
+        <div className="inputsContainer__inputContainer">
+          <h2>Nick</h2>
+          <input
+            value={loginData.nick}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              const inpEvent = e.nativeEvent as InputEvent;
+              setLoginData({
+                ...loginData,
+                nick: `${loginData.nick}${inpEvent.data}`,
+              });
+            }}
+            className="inputsContainer__input"
+            type="text"
+          />
+        </div>
+        <div className="inputsContainer__inputContainer">
+          <h2>Hasło</h2>
+          <input
+            className="inputsContainer__input"
+            type="password"
+            value={loginData.password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              const inpEvent = e.nativeEvent as InputEvent;
+              setLoginData({
+                ...loginData,
+                password: `${loginData.password}${inpEvent.data}`,
+              });
+            }}
+          />
         </div>
       </div>
-      <button>Zaloguj się</button>
-    </div>
+      <button className="loginButton">Zaloguj się</button>
+    </>
   );
 };
 
