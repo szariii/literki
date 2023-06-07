@@ -9,19 +9,12 @@ const RegisterComponent = () => {
     email: "",
   });
 
-  const config = {
-    method: "POST",
-    body: JSON.stringify(registerData),
-  };
-
   const createAccountHandler = async () => {
-    console.log("send axios")
-    //const data = await fetch(`${settings.address}/createAccount`,config)
-    const datab1 = await axios.post(
+    const data = await axios.post(
       `${settings.address}/createAccount`,
       registerData
     );
-    console.log(datab1);
+    console.log(data);
   };
 
   return (
@@ -74,7 +67,7 @@ const RegisterComponent = () => {
         </div>
       </div>
       <button className="loginButton" onClick={createAccountHandler}>
-        Zaloguj się
+        Zarejestruj się
       </button>
     </>
   );
