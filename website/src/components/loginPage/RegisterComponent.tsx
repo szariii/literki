@@ -1,9 +1,28 @@
-
 import { useState, ChangeEvent } from "react";
+import settings from "../../settings.json";
+import axios from "axios";
 
 const RegisterComponent = () => {
+  const [registerData, setRegisterData] = useState<RegsiterData>({
+    nick: "",
+    password: "",
+    email: "",
+  });
 
-  const [registerData,setRegisterData] = useState<RegsiterData>({nick:"",password:"",email:""})
+  const config = {
+    method: "POST",
+    body: JSON.stringify(registerData),
+  };
+
+  const createAccountHandler = async () => {
+    console.log("send axios")
+    //const data = await fetch(`${settings.address}/createAccount`,config)
+    const datab1 = await axios.post(
+      `${settings.address}/createAccount`,
+      registerData
+    );
+    console.log(datab1);
+  };
 
   return (
     <>
@@ -54,15 +73,17 @@ const RegisterComponent = () => {
           />
         </div>
       </div>
-      <button className="loginButton">Zaloguj się</button>
+      <button className="loginButton" onClick={createAccountHandler}>
+        Zaloguj się
+      </button>
     </>
   );
 };
 
-interface RegsiterData{
-  nick:string
-  password:string
-  email:string
+interface RegsiterData {
+  nick: string;
+  password: string;
+  email: string;
 }
 
 export default RegisterComponent;
