@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 //controllers
-const createAccountPost_1 = __importDefault(require("../controllers/createAccountPost"));
+const createAccount_1 = __importDefault(require("../controllers/createAccount"));
 const routes = (req, res, next) => {
     console.log(req.url);
     switch (req.method) {
@@ -12,7 +12,7 @@ const routes = (req, res, next) => {
             break;
         case "POST":
             if (req.url === "/createAccount") {
-                (0, createAccountPost_1.default)(req, res);
+                (0, createAccount_1.default)(req, res);
             }
             break;
     }

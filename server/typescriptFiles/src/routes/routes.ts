@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 //controllers
-import createAccountPost from "../controllers/createAccountPost";
+import createAccountPost from "../controllers/createAccount";
 
 const routes = (req: Request, res: Response, next: NextFunction) => {
   console.log(req.url)
