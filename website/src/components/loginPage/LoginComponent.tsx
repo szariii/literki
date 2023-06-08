@@ -16,10 +16,9 @@ const LoginComponent = () => {
           <input
             value={loginData.nick}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              const inpEvent = e.nativeEvent as InputEvent;
               setLoginData({
                 ...loginData,
-                nick: `${loginData.nick}${inpEvent.data}`,
+                nick: e.target.value,
               });
             }}
             className="inputsContainer__input"
@@ -33,10 +32,9 @@ const LoginComponent = () => {
             type="password"
             value={loginData.password}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              const inpEvent = e.nativeEvent as InputEvent;
               setLoginData({
                 ...loginData,
-                password: `${loginData.password}${inpEvent.data}`,
+                password: e.target.value,
               });
             }}
           />
