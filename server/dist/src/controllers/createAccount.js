@@ -13,9 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const createAccount_service_1 = __importDefault(require("../services/createAccount.service"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const createAccountPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("createAccount");
-    yield (0, createAccount_service_1.default)();
-    res.send({ name: "name" });
+    const passwd = bcryptjs_1.default.hashSync(req.body.email);
+    const newListing = {
+        nick: req.body.nick,
+        email: req.body.email,
+        password: passwd,
+        points: 1000,
+    };
+    const succeess = yield (0, createAccount_service_1.default)(newListing);
+    res.send(succeess);
+    console.log("wysłano");
 });
 exports.default = createAccountPost;

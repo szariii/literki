@@ -1,12 +1,28 @@
 import client from "../config/db.config";
 
-const query = async () => {
+const query = async (
+  collection: string,
+  operation: string,
+  listing: Object
+) => {
+
+
   try {
-    await client.connect();
-    //await client.db("scrabble").command({ping:1})
-    console.log("test");
+    if (operation === "insert") {
+      console.log("start");
+      const test = await client.db("scrabble").collection(collection).insertOne(listing);
+      console.log(test);
+      return test
+    }else if(operation==="find"){
+      const test =await client.db("scrabble").collection(collection).findOne(listing)
+      console.log(test)
+      return test
+    }
+
+  } catch {
+    return false;
   } finally {
-    await client.close();
+    //await client.close();
   }
 };
 

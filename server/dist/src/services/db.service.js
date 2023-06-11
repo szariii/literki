@@ -13,14 +13,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_config_1 = __importDefault(require("../config/db.config"));
-const query = () => __awaiter(void 0, void 0, void 0, function* () {
+const query = (collection, operation, listing) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield db_config_1.default.connect();
-        //await client.db("scrabble").command({ping:1})
-        console.log("test");
+        if (operation === "insert") {
+            console.log("start");
+            const test = yield db_config_1.default.db("scrabble").collection(collection).insertOne(listing);
+            console.log(test);
+            return test;
+        }
+        else if (operation === "find") {
+            const test = yield db_config_1.default.db("scrabble").collection(collection).findOne(listing);
+            console.log(test);
+            return test;
+        }
+    }
+    catch (_a) {
+        return false;
     }
     finally {
-        yield db_config_1.default.close();
+        //await client.close();
     }
 });
 exports.default = query;

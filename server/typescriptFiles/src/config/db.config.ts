@@ -1,7 +1,14 @@
-import "../../../.env"
-import { ServerApiVersion,MongoClient  } from "mongodb"
-require('dotenv').config()
+import "../../../.env";
+import { ServerApiVersion, MongoClient } from "mongodb";
 
-const client = new MongoClient(process.env.URL as string)
+require("dotenv").config();
 
-export default client
+const client = new MongoClient(process.env.URL as string, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+
+export default client;

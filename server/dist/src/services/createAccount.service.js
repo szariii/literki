@@ -13,7 +13,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_service_1 = __importDefault(require("./db.service"));
-const createUserService = () => __awaiter(void 0, void 0, void 0, function* () {
-    (0, db_service_1.default)();
+const createUserService = (newListing) => __awaiter(void 0, void 0, void 0, function* () {
+    const checkEmail = yield (0, db_service_1.default)("users", "find", { nick: newListing.nick });
+    if (checkEmail === null) {
+        const operation = (yield (0, db_service_1.default)("users", "insert", newListing));
+        if (operation.acknowledged) {
+            return ({
+                success: true,
+                message: "Account created"
+            });
+        }
+        else {
+            return ({
+                success: false,
+                message: "Error"
+            });
+        }
+    }
+    else {
+        return {
+            success: false,
+            message: "Nick jest zajęty",
+        };
+    }
 });
 exports.default = createUserService;
