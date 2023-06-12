@@ -2,7 +2,16 @@ import { useState, ChangeEvent, useRef } from "react";
 import settings from "../../settings.json";
 import axios from "axios";
 
-const RegisterComponent = () => {
+//Components
+import WaitingComponent from "../helpiongComponents/WaitingComponent";
+import SuccessComponent from "../helpiongComponents/SuccessComponent";
+import ErrorComponent from "../helpiongComponents/ErrorComponent";
+
+const RegisterComponent = ({ setShowLoginPage }: RegisterComponent) => {
+  const [showWaitnigComponent, setShowWaitingComponent] = useState(false);
+  const [showSuccessComponent, setShowSuccessComponent] = useState(false);
+  const [showErrorComponent, setShowErrorComponent] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const emailRef = useRef<HTMLInputElement>(null);
   const nickRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -11,6 +20,15 @@ const RegisterComponent = () => {
     password: "",
     email: "",
   });
+
+  const CreateAccountSuccesssfully = () => {
+    setShowSuccessComponent(false);
+    setShowLoginPage(true);
+  };
+
+  const CreateAccountError = () => {
+    setShowErrorComponent(false);
+  };
 
   const createAccountHandler = async () => {
     const tab = [
@@ -27,14 +45,24 @@ const RegisterComponent = () => {
 
     console.log(result);
     if (registerData.nick !== "" && registerData.password !== "" && result) {
+      setShowWaitingComponent(true);
       //fetch data
       const data = await axios.post(
         `${settings.address}/createAccount`,
         registerData
       );
-      console.log(data);
 
-      
+      const sendedData: ReceivedData = data.data;
+      setShowWaitingComponent(false);
+
+      if (sendedData.success) {
+        setShowSuccessComponent(true);
+      } else {
+        setShowErrorComponent(true);
+        setErrorMessage(sendedData.message);
+      }
+
+      console.log(data);
     } else {
       if (registerData.password === "") {
         const inpRef = passwordRef.current as HTMLInputElement;
@@ -108,9 +136,39 @@ const RegisterComponent = () => {
       <button className="loginButton" onClick={createAccountHandler}>
         Zarejestruj się
       </button>
+      {showWaitnigComponent ? (
+        <WaitingComponent header="Tworzenie konta" />
+      ) : (
+        ""
+      )}
+      {showSuccessComponent ? (
+        <SuccessComponent
+          header="Konto zostało stworzone"
+          onClickHandler={CreateAccountSuccesssfully}
+        />
+      ) : (
+        ""
+      )}
+      {showErrorComponent ? (
+        <ErrorComponent
+          header={errorMessage}
+          onClickHandler={CreateAccountError}
+        />
+      ) : (
+        ""
+      )}
     </>
   );
 };
+
+interface RegisterComponent {
+  setShowLoginPage: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface ReceivedData {
+  success: boolean;
+  message: string;
+}
 
 interface RegsiterData {
   nick: string;
