@@ -15,13 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const createAccount_service_1 = __importDefault(require("../services/createAccount.service"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const createAccountPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const passwd = bcryptjs_1.default.hashSync(req.body.email);
+    const passwd = bcryptjs_1.default.hashSync(req.body.password, 10);
     const newListing = {
         nick: req.body.nick,
         email: req.body.email,
         password: passwd,
         points: 1000,
     };
+    console.log(passwd);
     const succeess = yield (0, createAccount_service_1.default)(newListing);
     res.send(succeess);
     console.log("wysłano");

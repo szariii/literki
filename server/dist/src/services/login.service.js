@@ -12,23 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//controllers
-const createAccount_1 = __importDefault(require("../controllers/createAccount"));
-const login_1 = __importDefault(require("../controllers/login"));
-const routes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.url);
-    switch (req.method) {
-        case "GET":
-            break;
-        case "POST":
-            if (req.url === "/createAccount") {
-                yield (0, createAccount_1.default)(req, res);
-            }
-            else if (req.url === "/login") {
-                yield (0, login_1.default)(req, res);
-            }
-            break;
-    }
-    next();
+const db_service_1 = __importDefault(require("./db.service"));
+const loginService = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    const findNick = {
+        nick: data.nick
+    };
+    const databaseUser = yield (0, db_service_1.default)("users", "find", findNick);
+    return databaseUser;
 });
-exports.default = routes;
+exports.default = loginService;

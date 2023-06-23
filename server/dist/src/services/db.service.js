@@ -16,14 +16,11 @@ const db_config_1 = __importDefault(require("../config/db.config"));
 const query = (collection, operation, listing) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (operation === "insert") {
-            console.log("start");
             const test = yield db_config_1.default.db("scrabble").collection(collection).insertOne(listing);
-            console.log(test);
             return test;
         }
         else if (operation === "find") {
             const test = yield db_config_1.default.db("scrabble").collection(collection).findOne(listing);
-            console.log(test);
             return test;
         }
     }

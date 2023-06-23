@@ -12,23 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//controllers
-const createAccount_1 = __importDefault(require("../controllers/createAccount"));
-const login_1 = __importDefault(require("../controllers/login"));
-const routes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.url);
-    switch (req.method) {
-        case "GET":
-            break;
-        case "POST":
-            if (req.url === "/createAccount") {
-                yield (0, createAccount_1.default)(req, res);
-            }
-            else if (req.url === "/login") {
-                yield (0, login_1.default)(req, res);
-            }
-            break;
+const login_service_1 = __importDefault(require("../services/login.service"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("test");
+    console.log(req.body);
+    const checkData = {
+        nick: req.body.nick,
+        password: req.body.password
+    };
+    const returnData = yield (0, login_service_1.default)(checkData);
+    if (returnData) {
+        const success = bcryptjs_1.default.compareSync(req.body.password, returnData.password);
+        console.log(success);
+        if (success) {
+            res.send({ success: true, data: returnData });
+            return;
+        }
     }
-    next();
+    res.send({ success: false, data: "Błędne dane" });
 });
-exports.default = routes;
+exports.default = login;

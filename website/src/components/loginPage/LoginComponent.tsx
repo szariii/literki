@@ -1,4 +1,6 @@
+import axios from "axios";
 import "../../style/loginPage/_loginComponent.scss";
+import settings from "../../settings.json"
 
 import { ChangeEvent, useState } from "react";
 
@@ -7,6 +9,11 @@ const LoginComponent = () => {
     nick: "",
     password: "",
   });
+
+  const loginButtonHandler=async()=>{
+    const data = await axios.post(`${settings.address}/login`, loginData)
+    console.log(data)
+  }
 
   return (
     <>
@@ -40,7 +47,7 @@ const LoginComponent = () => {
           />
         </div>
       </div>
-      <button className="loginButton">Zaloguj się</button>
+      <button onClick={loginButtonHandler} className="loginButton">Zaloguj się</button>
     </>
   );
 };
