@@ -3,16 +3,29 @@ import "../../style/loginPage/_loginComponent.scss";
 import settings from "../../settings.json"
 
 import { ChangeEvent, useState } from "react";
+import { useNavigate} from "react-router-dom"
+import ErrorComponent from "../helpiongComponents/ErrorComponent";
+import WaitingComponent from "../helpiongComponents/WaitingComponent";
 
 const LoginComponent = () => {
+  const [errorMessage,setErrorMessage] = useState(false)
+  const [waiting,setWaiting] = useState(false)
+  const navigate = useNavigate()
   const [loginData, setLoginData] = useState<LoginData>({
     nick: "",
     password: "",
   });
 
   const loginButtonHandler=async()=>{
+    setWaiting(!waiting)
     const data = await axios.post(`${settings.address}/login`, loginData)
-    console.log(data)
+    console.log(data.data.success)
+    setWaiting(!waiting)
+    if(data.data.success){
+      navigate("/main")
+    }else{
+      setErrorMessage(!errorMessage)
+    }
   }
 
   return (
@@ -48,6 +61,8 @@ const LoginComponent = () => {
         </div>
       </div>
       <button onClick={loginButtonHandler} className="loginButton">Zaloguj się</button>
+      {errorMessage?<ErrorComponent header="Błędne dane" onClickHandler={()=>{setErrorMessage(!errorMessage)}} />:""}
+      {waiting?<WaitingComponent header="logowanie..." />:""}
     </>
   );
 };
