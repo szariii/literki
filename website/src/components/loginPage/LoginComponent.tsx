@@ -7,7 +7,13 @@ import { useNavigate} from "react-router-dom"
 import ErrorComponent from "../helpiongComponents/ErrorComponent";
 import WaitingComponent from "../helpiongComponents/WaitingComponent";
 
+import { RootState } from "../../redux/store";
+import {useSelector,useDispatch} from "react-redux"
+import { add,remove } from "../../redux/slicers/userData";
+
 const LoginComponent = () => {
+  const dispatch = useDispatch()
+  
   const [errorMessage,setErrorMessage] = useState(false)
   const [waiting,setWaiting] = useState(false)
   const navigate = useNavigate()
@@ -19,9 +25,10 @@ const LoginComponent = () => {
   const loginButtonHandler=async()=>{
     setWaiting(!waiting)
     const data = await axios.post(`${settings.address}/login`, loginData)
-    console.log(data.data.success)
+    console.log(data.data)
     setWaiting(!waiting)
     if(data.data.success){
+      dispatch(add(data.data.data))
       navigate("/main")
     }else{
       setErrorMessage(!errorMessage)
