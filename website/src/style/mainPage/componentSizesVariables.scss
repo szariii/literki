@@ -1,0 +1,32 @@
+@use "../variables" as *;
+.mainPageComponent{
+    width: 25rem;
+    height: 20rem;
+    background-color: $blue-color;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+
+
+    &__icon{
+        height: 5rem;
+        color: $pink-color;
+    }
+
+    &__button{
+        width: 20rem;
+        height: 8rem;
+        border-radius: 20px;
+        font-size: 3rem;
+        background-color: $light-pink-color;
+        color: $pink-color;
+        border-color: $light-pink-color;
+        cursor: pointer;
+    }
+}
+
+
+
+

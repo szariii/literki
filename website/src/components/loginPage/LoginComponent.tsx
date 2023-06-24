@@ -7,9 +7,8 @@ import { useNavigate} from "react-router-dom"
 import ErrorComponent from "../helpiongComponents/ErrorComponent";
 import WaitingComponent from "../helpiongComponents/WaitingComponent";
 
-import { RootState } from "../../redux/store";
-import {useSelector,useDispatch} from "react-redux"
-import { add,remove } from "../../redux/slicers/userData";
+import {useDispatch} from "react-redux"
+import { add } from "../../redux/slicers/userData";
 
 const LoginComponent = () => {
   const dispatch = useDispatch()

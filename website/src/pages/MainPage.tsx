@@ -1,6 +1,18 @@
+import PlayGameComponent from "../components/mainPage/PlayGameComponent"
+import RankingComponent from "../components/mainPage/RankingComponent"
+import ProfileComponent from "../components/mainPage/ProfileComponent"
+import FriendsComponent from "../components/mainPage/FriendsComponent"
+
+import "../style/mainPage/mainPage.scss"
+
 const MainPage = () =>{
     return(
-        <div>Main</div>
+        <div className="mainPage" >
+            <PlayGameComponent/>
+            <RankingComponent/>
+            <ProfileComponent/>
+            <FriendsComponent/>
+        </div>
     )
 }
 
