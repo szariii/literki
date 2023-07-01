@@ -5,11 +5,11 @@ const Nav = () => {
     <div className="navbar">
       <h1 className="navbar__title">Literki</h1>
 
-      <div className="navbar__container">
+      {/* <div className="navbar__container">
         <button className="navbar__button"></button>
         <button className="navbar__button"></button>
         <button className="navbar__button"></button>
-      </div>
+      </div> */}
     </div>
   );
 };

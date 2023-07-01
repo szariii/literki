@@ -3,8 +3,12 @@ import bodyparser from "body-parser";
 import routes from "./src/routes/routes";
 import cors from "cors";
 
+import creatingGames from "./src/helpingFunctions/creatingGames";
+
 const app = express();
 const port = 3000;
+
+setInterval(creatingGames,1000)
 
 app.use(bodyparser.json());
 app.use(

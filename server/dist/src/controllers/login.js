@@ -15,8 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const login_service_1 = __importDefault(require("../services/login.service"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("test");
-    console.log(req.body);
     const checkData = {
         nick: req.body.nick,
         password: req.body.password

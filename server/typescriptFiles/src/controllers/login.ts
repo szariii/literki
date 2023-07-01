@@ -5,8 +5,6 @@ import bycrypt from "bcryptjs";
 import { UserData } from "../interfaces";
 
 const login=async(req:Request,res:Response)=>{
-    console.log("test")
-    console.log(req.body)
     const checkData:LoginUserData = {
         nick:req.body.nick,
         password:req.body.password

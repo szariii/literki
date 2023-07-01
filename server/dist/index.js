@@ -7,8 +7,10 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const routes_1 = __importDefault(require("./src/routes/routes"));
 const cors_1 = __importDefault(require("cors"));
+const creatingGames_1 = __importDefault(require("./src/helpingFunctions/creatingGames"));
 const app = (0, express_1.default)();
 const port = 3000;
+setInterval(creatingGames_1.default, 1000);
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({
     extended: true,

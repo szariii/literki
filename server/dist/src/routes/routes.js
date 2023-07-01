@@ -15,17 +15,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //controllers
 const createAccount_1 = __importDefault(require("../controllers/createAccount"));
 const login_1 = __importDefault(require("../controllers/login"));
+const findGame_1 = __importDefault(require("../controllers/findGame"));
+const cancelFindGame_1 = __importDefault(require("../controllers/cancelFindGame"));
+const checkForGame_1 = __importDefault(require("../controllers/checkForGame"));
 const routes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.url);
+    //console.log(req.url)
     switch (req.method) {
         case "GET":
+            //console.log(req.path)
+            if (req.path === "/checkForGame") {
+                yield (0, checkForGame_1.default)(req, res);
+            }
             break;
         case "POST":
+            console.log(req.url);
             if (req.url === "/createAccount") {
                 yield (0, createAccount_1.default)(req, res);
             }
             else if (req.url === "/login") {
                 yield (0, login_1.default)(req, res);
+            }
+            else if (req.url === "/findGame") {
+                yield (0, findGame_1.default)(req, res);
+            }
+            else if (req.url === "/cancelFindGame") {
+                yield (0, cancelFindGame_1.default)(req, res);
             }
             break;
     }

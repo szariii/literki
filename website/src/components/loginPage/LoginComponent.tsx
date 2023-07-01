@@ -22,11 +22,12 @@ const LoginComponent = () => {
   });
 
   const loginButtonHandler=async()=>{
-    setWaiting(!waiting)
+    setWaiting(true)
     const data = await axios.post(`${settings.address}/login`, loginData)
     console.log(data.data)
-    setWaiting(!waiting)
+    setWaiting(false)
     if(data.data.success){
+      console.log(data.data.data)
       dispatch(add(data.data.data))
       navigate("/main")
     }else{

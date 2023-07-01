@@ -7,7 +7,7 @@
   background-color: $orange-color;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 5px 20px;
 
   &__button {
@@ -16,9 +16,4 @@
     background-color: $orange-color;
   }
 
-  &__title {
-  }
-
-  &__container {
-  }
 }

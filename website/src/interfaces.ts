@@ -1,5 +1,5 @@
 export interface UserData{
-    _id:number
+    _id:string
     nick: string;
     password: string;
     points: number;
