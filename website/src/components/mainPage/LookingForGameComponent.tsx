@@ -2,17 +2,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import "../../style/mainPage/lookingForGameComponent.scss";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import settings from "../../settings.json";
 
 import type { RootState } from "../../redux/store";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch } from "react-redux";
+import { add } from "../../redux/slicers/gameData";
 
 const LookigForGameComponent = ({
   header,
   setShowWaitingComponent,
 }: LookigForGameComponent) => {
+
+  const dispatch=useDispatch()
   const player = useSelector((state: RootState) => state.userData);
 
   useEffect(()=>{
@@ -21,8 +25,11 @@ const LookigForGameComponent = ({
       const findedPlayer = await axios.get(`${settings.address}/checkForGame`, {
         params: { id: player._id },
       });
-      if(findedPlayer.data.success){
-
+      if(findedPlayer.data.findedGame){
+        console.log(findedPlayer.data)
+        dispatch(add(findedPlayer.data.rooms[0]))
+        setShowWaitingComponent(false)
+        console.log()
       }
     }, 500);
 

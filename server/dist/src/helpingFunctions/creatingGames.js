@@ -16,6 +16,7 @@ const creatingGames = () => {
                 { id: player2, points: 0, lettersInHand: [] },
             ],
         });
+        console.log(data_1.tableWithPlayingRooms);
     }
 };
 exports.default = creatingGames;

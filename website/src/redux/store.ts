@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userDataReducer from "./slicers/userData"
+import  gameDataReducer  from "./slicers/gameData";
 
 export const store = configureStore({
   reducer: {
-    userData:userDataReducer
+    userData:userDataReducer,
+    gameData:gameDataReducer
   },
 });
 
