@@ -6,9 +6,12 @@ import login from "../controllers/login";
 import findGame from "../controllers/findGame";
 import cancelFindGame from "../controllers/cancelFindGame";
 import checkForGame from "../controllers/checkForGame";
+import getUserData from "../controllers/getUserInfo";
+
 
 const routes = async(req: Request, res: Response, next: NextFunction) => {
   //console.log(req.url)
+  try{
   switch(req.method){
     case "GET":
       //console.log(req.path)
@@ -27,9 +30,15 @@ const routes = async(req: Request, res: Response, next: NextFunction) => {
         await findGame(req,res)
       }else if(req.url==="/cancelFindGame"){
         await cancelFindGame(req,res)
+      }else if(req.url==="/getUserData"){
+        await getUserData(req,res)
       }
       break
   }
+}catch(err){
+  console.log(err)
+  res.send("error")
+}
   next();
 };
 export default routes;

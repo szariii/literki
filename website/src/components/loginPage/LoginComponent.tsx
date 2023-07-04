@@ -10,7 +10,10 @@ import WaitingComponent from "../helpiongComponents/WaitingComponent";
 import {useDispatch} from "react-redux"
 import { add } from "../../redux/slicers/userData";
 
+import useCookies from "react-cookie/cjs/useCookies";
+
 const LoginComponent = () => {
+  const [cookies,setCookie] = useCookies(["user"])
   const dispatch = useDispatch()
   
   const [errorMessage,setErrorMessage] = useState(false)
@@ -28,6 +31,7 @@ const LoginComponent = () => {
     setWaiting(false)
     if(data.data.success){
       console.log(data.data.data)
+      setCookie("user",data.data.data._id,{path:"/"})
       dispatch(add(data.data.data))
       navigate("/main")
     }else{

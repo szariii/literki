@@ -29,7 +29,6 @@ const LookigForGameComponent = ({
         console.log(findedPlayer.data)
         dispatch(add(findedPlayer.data.rooms[0]))
         setShowWaitingComponent(false)
-        console.log()
       }
     }, 500);
 

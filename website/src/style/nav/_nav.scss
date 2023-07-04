@@ -7,13 +7,16 @@
   background-color: $orange-color;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   padding: 5px 20px;
 
   &__button {
-    width: 10px;
-    height: 10px;
-    background-color: $orange-color;
+    width: 6rem;
+    height: 2rem;
+    background-color: $red-color;
+    cursor: pointer;
+    color: $light-blue-color;
+    border-radius: 20px;
   }
 
 }
