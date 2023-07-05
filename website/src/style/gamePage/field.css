@@ -1,0 +1,9 @@
+@use "../variables" as *;
+.field, .field--start, .field--3xWord, .field--2xWord, .field--3xLetter, .field--2xLetter {
+  border: 1px solid black;
+  align-self: stretch;
+}
+
+.field--3xWord {
+  background-color: red;
+}

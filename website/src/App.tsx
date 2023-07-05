@@ -1,6 +1,7 @@
 //Pages
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
+import GamePage from "./pages/GamePage";
 
 //Components
 import Nav from "./components/nav/Nav";
@@ -14,7 +15,7 @@ import { useCookies } from 'react-cookie';
 
 import { useSelector,useDispatch } from "react-redux";
 
-import { RootState, store } from "./redux/store";
+import { RootState } from "./redux/store";
 
 import { add } from "./redux/slicers/userData";
 
@@ -63,6 +64,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/main" element={<MainPage />} />
+          <Route path="/game/:id" element={<GamePage/>}/>
         </Routes>
       </Router>
     </div>

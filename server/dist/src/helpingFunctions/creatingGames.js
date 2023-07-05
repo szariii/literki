@@ -8,6 +8,29 @@ const creatingGames = () => {
         //console.log(tableWithPlayers.unshift())
         const player1 = data_1.tableWithPlayers.shift();
         const player2 = data_1.tableWithPlayers.shift();
+        const bonusPlacesToChosse = ["3xWord", "3xWord", "3xWord", "3xWord", "2xWord", "2xWord", "2xWord", "2xWord", "3xLetter", "3xLetter", "3xLetter", "3xLetter", "2xLetter", "2xLetter", "2xLetter", "2xLetter"];
+        const bonusPlaces = [];
+        const getRandomInt = (max) => {
+            return Math.floor(Math.random() * max);
+        };
+        bonusPlacesToChosse.map(placeName => {
+            let flag = false;
+            while (!flag) {
+                const i = getRandomInt(15);
+                const j = getRandomInt(15);
+                if (i !== 7 && j !== 7) {
+                    flag = true;
+                    bonusPlaces.map(place => {
+                        if (place.i === i && place.j === j) {
+                            flag = false;
+                        }
+                    });
+                }
+                if (flag) {
+                    bonusPlaces.push({ i: i, j: j, type: placeName });
+                }
+            }
+        });
         data_1.tableWithPlayingRooms.push({
             status: "connecting players",
             id: id,
@@ -15,6 +38,7 @@ const creatingGames = () => {
                 { id: player1, points: 0, lettersInHand: [] },
                 { id: player2, points: 0, lettersInHand: [] },
             ],
+            bonusPlaces: bonusPlaces
         });
         console.log(data_1.tableWithPlayingRooms);
     }

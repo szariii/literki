@@ -1,0 +1,33 @@
+@use "../variables" as *;
+
+.field{
+    // width: 1rem;
+    // height: 1rem;
+    border: 1px solid black;
+    align-self: stretch;
+
+    &--start{
+        @extend .field;
+        background-color: $orange-color;
+    }
+
+    &--3xWord{
+        @extend .field;
+        background-color: rgb(255, 5, 222);
+    }
+
+    &--2xWord{
+        @extend .field;
+        background-color: $pink-color;
+    }
+
+    &--3xLetter{
+        @extend .field;
+        background-color: rgb(207, 225, 46);
+    }
+
+    &--2xLetter{
+        @extend .field;
+        background-color: $blue-color;
+    }
+}

@@ -10,12 +10,13 @@ import type { RootState } from "../../redux/store";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
 import { add } from "../../redux/slicers/gameData";
+import { useNavigate } from "react-router-dom";
 
 const LookigForGameComponent = ({
   header,
   setShowWaitingComponent,
 }: LookigForGameComponent) => {
-
+  const navigate = useNavigate()
   const dispatch=useDispatch()
   const player = useSelector((state: RootState) => state.userData);
 
@@ -27,6 +28,7 @@ const LookigForGameComponent = ({
       });
       if(findedPlayer.data.findedGame){
         console.log(findedPlayer.data)
+        navigate(`/game/${findedPlayer.data.rooms[0].id}`)
         dispatch(add(findedPlayer.data.rooms[0]))
         setShowWaitingComponent(false)
       }
