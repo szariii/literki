@@ -34,10 +34,8 @@ const creatingGames = () => {
         data_1.tableWithPlayingRooms.push({
             status: "connecting players",
             id: id,
-            players: [
-                { id: player1, points: 0, lettersInHand: [] },
-                { id: player2, points: 0, lettersInHand: [] },
-            ],
+            player1: { id: player1.id, nick: player1.nick },
+            player2: { id: player2.id, nick: player2.nick },
             bonusPlaces: bonusPlaces
         });
         console.log(data_1.tableWithPlayingRooms);

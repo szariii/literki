@@ -5,18 +5,28 @@ import { RoomInformation } from "../interfaces"
 
 const checkForGame=async(req:Request,res:Response)=>{
     const id = req.query.id as string
-    if(tableWithPlayers.includes(id)){
+    let flag = false
+    tableWithPlayers.map(ele=>{
+        if(ele.id===id){
+            flag=true
+        }
+    })
+    
+    if(flag){
         res.send({findedGame:false})
     }else{
         console.log("no czesc")
         const sendTable:Array<RoomInformation>=[]
         tableWithPlayingRooms.map(room=>{
-            room.players.map(player=>{
-                if(player.id==id){
-                    //res.send({findedGame:true, room:room})
-                    sendTable.push(room)
-                }
-            })
+            if(room.player1.id===id ||room.player2.id===id){
+                sendTable.push(room)
+            }
+            // room.players.map(player=>{
+            //     if(player.id==id){
+            //         //res.send({findedGame:true, room:room})
+            //         sendTable.push(room)
+            //     }
+            // })
         })
 
         if(sendTable.length>0){

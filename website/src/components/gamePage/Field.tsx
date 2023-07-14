@@ -5,7 +5,6 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 
 const Field = ({fieldInfo,i,j}:Field) =>{
-    console.log(fieldInfo)
     const game = useSelector((state:RootState)=>state.gameData)
     
     let className=""

@@ -22,14 +22,14 @@ export interface RoomInformation{
   status:string
   id:string
   //lettersLeft:Array<string>
-  players:Array<RoomPlayerInfo>
+  player1:RoomPlayerInfo
+  player2:RoomPlayerInfo
   bonusPlaces:Array<BonusPlace>
 }
 
 export interface RoomPlayerInfo{
   id:string
-  points:number
-  lettersInHand:Array<string>
+  nick:string
 }
 
 export interface BonusPlace{
@@ -38,3 +38,7 @@ export interface BonusPlace{
   type:string
 }
 
+export interface LookingForGameUser{
+  id:string
+  nick:string
+}

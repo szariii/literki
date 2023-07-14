@@ -12,19 +12,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const data_1 = require("../data/data");
 const checkForGame = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.query.id;
-    if (data_1.tableWithPlayers.includes(id)) {
+    let flag = false;
+    data_1.tableWithPlayers.map(ele => {
+        if (ele.id === id) {
+            flag = true;
+        }
+    });
+    if (flag) {
         res.send({ findedGame: false });
     }
     else {
         console.log("no czesc");
         const sendTable = [];
         data_1.tableWithPlayingRooms.map(room => {
-            room.players.map(player => {
-                if (player.id == id) {
-                    //res.send({findedGame:true, room:room})
-                    sendTable.push(room);
-                }
-            });
+            if (room.player1.id === id || room.player2.id === id) {
+                sendTable.push(room);
+            }
+            // room.players.map(player=>{
+            //     if(player.id==id){
+            //         //res.send({findedGame:true, room:room})
+            //         sendTable.push(room)
+            //     }
+            // })
         });
         if (sendTable.length > 0) {
             res.send({ findedGame: true, rooms: sendTable });

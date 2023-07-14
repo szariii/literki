@@ -26,7 +26,7 @@ const PlayGameComponent = () => {
     setShowWaitingComponent(true)
     try{
       console.log(player)
-      const data = await axios.post(`${settings.address}/findGame`,{id:player._id})
+      const data = await axios.post(`${settings.address}/findGame`,{id:player._id,nick:player.nick})
       console.log(data)
       if(data.data.success){
         

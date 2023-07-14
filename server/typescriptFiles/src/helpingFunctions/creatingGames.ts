@@ -1,5 +1,6 @@
 import { tableWithPlayers, tableWithPlayingRooms } from "../data/data";
 import { v4 as uuid } from "uuid";
+import { LookingForGameUser } from "../interfaces";
 
 import { BonusPlace } from "../interfaces";
 
@@ -7,8 +8,8 @@ const creatingGames = () => {
   while (tableWithPlayers.length > 1) {
     const id = uuid();
     //console.log(tableWithPlayers.unshift())
-    const player1 = tableWithPlayers.shift() as string;
-    const player2 = tableWithPlayers.shift() as string;
+    const player1 = tableWithPlayers.shift() as LookingForGameUser;
+    const player2 = tableWithPlayers.shift() as LookingForGameUser;
 
     const bonusPlacesToChosse = ["3xWord","3xWord","3xWord","3xWord","2xWord","2xWord","2xWord","2xWord","3xLetter","3xLetter","3xLetter","3xLetter","2xLetter","2xLetter","2xLetter","2xLetter"]
     const bonusPlaces:Array<BonusPlace>=[]
@@ -44,10 +45,8 @@ const creatingGames = () => {
     tableWithPlayingRooms.push({
       status: "connecting players",
       id: id,
-      players: [
-        { id: player1, points: 0, lettersInHand: [] },
-        { id: player2, points: 0, lettersInHand: [] },
-      ],
+      player1:{ id: player1.id,nick:player1.nick },
+      player2:{ id: player2.id,nick:player2.nick },
       bonusPlaces:bonusPlaces
     });
     console.log(tableWithPlayingRooms)

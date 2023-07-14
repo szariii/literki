@@ -6,7 +6,8 @@ import { RoomInformation } from "../../interfaces";
 const initialState:RoomInformation={
     id:"0",
     status:"not",
-    players:[],
+    player1:{id:"0",nick:""},
+    player2:{id:"0",nick:""},
     bonusPlaces:[]
 }
 
@@ -16,14 +17,16 @@ export const gameDataSlicer = createSlice({
     reducers:{
         add:(state, action:PayloadAction<RoomInformation>)=>{
             state.id = action.payload.id
-            state.players=action.payload.players
+            state.player1=action.payload.player1
+            state.player2=action.payload.player2
             state.status=action.payload.status
             state.bonusPlaces=action.payload.bonusPlaces
         },
 
         endGame:(state)=>{
             state.id = initialState.id
-            state.players=initialState.players
+            state.player1=initialState.player1
+            state.player2=initialState.player2
             state.status=initialState.status
             state.bonusPlaces=initialState.bonusPlaces
         }

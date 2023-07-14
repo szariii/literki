@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const data_1 = require("../data/data");
 const findGame = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
-    data_1.tableWithPlayers.push(req.body.id);
+    data_1.tableWithPlayers.push({ id: req.body.id, nick: req.body.nick });
     console.log(data_1.tableWithPlayers);
     res.send({ success: true });
 });

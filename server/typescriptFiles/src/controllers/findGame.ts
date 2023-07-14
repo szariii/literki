@@ -3,7 +3,7 @@ import { tableWithPlayers } from "../data/data";
 
 const findGame = async (req: Request, res: Response) => {
   console.log(req.body);
-  tableWithPlayers.push(req.body.id);
+  tableWithPlayers.push({id:req.body.id,nick:req.body.nick});
   console.log(tableWithPlayers);
   res.send({ success: true });
 };
