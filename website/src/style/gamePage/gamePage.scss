@@ -12,8 +12,6 @@
 
 
     &__board{
-        width: 50%;
-        height: 50%;
         display: grid;
         grid-template-columns: repeat(15,2rem);
         grid-template-rows: repeat(15,2rem);
@@ -31,4 +29,17 @@
         align-items: center;
         justify-content: space-around;
       }
+
+    &__letters{
+        text-align: center;
+    }
+
+
+    &__points{
+        text-align: center;
+    }
+
+    &__nick{
+        text-align: center;
+    }
 }

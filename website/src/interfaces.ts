@@ -29,3 +29,8 @@ export interface BonusPlace{
   j:number
   type:string
 }
+
+export interface PointsForLetter{
+  points:number,
+  letters:Array<string>
+}

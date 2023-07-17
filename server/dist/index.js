@@ -10,6 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 const socket_io_1 = require("socket.io");
 const creatingGames_1 = __importDefault(require("./src/helpingFunctions/creatingGames"));
 const mainSocketIo_1 = __importDefault(require("./src/socketIo/mainSocketIo"));
+const creatingArrayWithWords_1 = __importDefault(require("./src/helpingFunctions/creatingArrayWithWords"));
 const app = (0, express_1.default)();
 const port = 3000;
 const socketIo = new socket_io_1.Server(3001, {
@@ -18,6 +19,7 @@ const socketIo = new socket_io_1.Server(3001, {
     }
 });
 setInterval(creatingGames_1.default, 1000);
+const words = (0, creatingArrayWithWords_1.default)();
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({
     extended: true,

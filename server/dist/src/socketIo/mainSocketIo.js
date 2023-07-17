@@ -5,6 +5,10 @@ const mainSocketIo = (socket, socketIo) => {
     const roomName = query.roomName;
     if (roomName) {
         socket.join(roomName);
+        socket.on("disconnect", (reason) => {
+            console.log("test");
+            console.log(reason);
+        });
         socket.on("send", (msg) => {
             console.log(msg);
             socketIo.to(roomName).emit("send", msg);

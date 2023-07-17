@@ -1,0 +1,9 @@
+@use "../variables" as *;
+
+.letterInHand{
+    
+
+    &:hover{
+        background-color: $orange-color;
+    }
+}

@@ -6,7 +6,7 @@ import { Server } from "socket.io";
 
 import creatingGames from "./src/helpingFunctions/creatingGames";
 import mainSocketIo from "./src/socketIo/mainSocketIo";
-
+import creatingArrayWithWords from "./src/helpingFunctions/creatingArrayWithWords";
 const app = express();
 const port = 3000;
 const socketIo = new Server(3001,{
@@ -17,7 +17,8 @@ const socketIo = new Server(3001,{
 
 setInterval(creatingGames,1000)
 
- 
+const words = creatingArrayWithWords()
+
 
 app.use(bodyparser.json());
 app.use(
