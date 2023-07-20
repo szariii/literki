@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import "../style/gamePage/gamePage.scss";
 import Field from "../components/gamePage/Field";
-import { FieldInfo } from "../interfaces";
+import { FieldInfo,LetterInHandInterface } from "../interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { io } from "socket.io-client";
 import settings from "../settings.json";
 import LetterInHand from "../components/gamePage/LetterInHand";
+import axios from "axios";
+import letters from "../data/letters";
 
 const GamePage = () => {
   const game = useSelector((state: RootState) => state.gameData);
@@ -32,9 +34,11 @@ const GamePage = () => {
     };
   }, []);
 
-  const sendData = () => {
+  const sendData = async() => {
     console.log("emit");
-    socket.emit("send", { room: game.id, data: "bla" });
+    const test = await axios.get(`${settings.address}/checkWords`,{params:{data:"haha"}})
+    console.log(test)
+    //socket.emit("send", { room: game.id, data: "bla" });
   };
 
   const tab: FieldInfo[][] = [];
@@ -58,6 +62,22 @@ const GamePage = () => {
     player2: 0,
     letters: 86,
   });
+
+  const getRandomInt=(max:number)=> {
+    return Math.floor(Math.random() * max);
+  }
+
+
+
+  const lettersInHandTemporary:Array<LetterInHandInterface> = []
+  for(let i = 0;i<7;i++){
+    lettersInHandTemporary.push({letter:letters[getRandomInt(32)],id:i})
+  }
+  console.log(lettersInHandTemporary)
+
+  const [lettersInHand,setLettersInHand]=useState<Array<LetterInHandInterface>>(lettersInHandTemporary)
+
+
 
   return (
     <div className="gamePage">
@@ -86,7 +106,9 @@ const GamePage = () => {
         )}
       </div>
       <div className="gamePage_hand">
-        <LetterInHand />
+          {lettersInHand.map(ele=>{
+            return <LetterInHand key={ele.id} id={ele.id} letter={ele.letter} />
+          })}
       </div>
     </div>
   );

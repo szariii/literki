@@ -1,3 +1,4 @@
+
 export interface UserData {
   _id: string;
   nick: string;
@@ -33,4 +34,9 @@ export interface BonusPlace{
 export interface PointsForLetter{
   points:number,
   letters:Array<string>
+}
+
+export interface LetterInHandInterface{
+  letter:string
+  id:number
 }

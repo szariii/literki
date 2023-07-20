@@ -7,6 +7,7 @@ import findGame from "../controllers/findGame";
 import cancelFindGame from "../controllers/cancelFindGame";
 import checkForGame from "../controllers/checkForGame";
 import getUserData from "../controllers/getUserInfo";
+import checkWords from "../controllers/checkWords";
 
 
 const routes = async(req: Request, res: Response, next: NextFunction) => {
@@ -15,9 +16,11 @@ const routes = async(req: Request, res: Response, next: NextFunction) => {
   switch(req.method){
     case "GET":
       //console.log(req.path)
-
       if(req.path==="/checkForGame"){
         await checkForGame(req,res)
+      }else if(req.path==="/checkWords"){
+        console.log("tralala")
+        await checkWords(req,res)
       }
       break;
     case "POST":

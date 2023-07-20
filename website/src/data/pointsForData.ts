@@ -9,3 +9,5 @@ const pointsForData:Array<PointsForLetter>=[
     {points:7,letters:["Ń"]},
     {points:1,letters:["Ź"]},
 ]
+
+export default pointsForData
