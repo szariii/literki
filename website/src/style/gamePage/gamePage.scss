@@ -42,4 +42,9 @@
     &__nick{
         text-align: center;
     }
+
+    &__hand{
+        display: flex;
+        flex-direction: row;
+    }
 }

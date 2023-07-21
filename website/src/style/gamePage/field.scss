@@ -5,6 +5,9 @@
     // height: 1rem;
     border: 1px solid black;
     align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &--start{
         @extend .field;

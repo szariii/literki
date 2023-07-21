@@ -1,7 +1,13 @@
 @use "../variables" as *;
 
 .letterInHand{
-    
+    border: 2px solid black;
+    margin: 0 2px;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover{
         background-color: $orange-color;

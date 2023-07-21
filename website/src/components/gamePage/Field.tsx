@@ -4,7 +4,7 @@ import "../../style/gamePage/field.scss"
 import { useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 
-const Field = ({fieldInfo,i,j}:Field) =>{
+const Field = ({fieldInfo,i,j,gameLogic}:Field) =>{
     const game = useSelector((state:RootState)=>state.gameData)
     
     let className=""
@@ -19,7 +19,7 @@ const Field = ({fieldInfo,i,j}:Field) =>{
     }
 
     return(
-        <div className={`field${className}`} >{fieldInfo.letter}</div>
+        <div className={`field${className}`} ><h4>{fieldInfo.letter}</h4></div>
     )
 }
 export default Field
@@ -28,4 +28,5 @@ interface Field{
     fieldInfo:FieldInfo,
     i:number
     j:number
+    gameLogic:Function
 }

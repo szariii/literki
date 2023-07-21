@@ -13,6 +13,7 @@ import letters from "../data/letters";
 const GamePage = () => {
   const game = useSelector((state: RootState) => state.gameData);
   const user = useSelector((state: RootState) => state.userData);
+  const [playLetters,setPlayLetters]=useState(false)
 
   const URL = settings.socketAddress;
   const socket = io(URL, {
@@ -76,6 +77,9 @@ const GamePage = () => {
   console.log(lettersInHandTemporary)
 
   const [lettersInHand,setLettersInHand]=useState<Array<LetterInHandInterface>>(lettersInHandTemporary)
+  const [selectedLetter,setSelectedLetter] = useState(-1)
+
+  const gameLogic=()=>{}
 
 
 
@@ -97,17 +101,17 @@ const GamePage = () => {
           <h4 className="gamePage__points">{gameSendInformation.player2}</h4>
         </div>
       </div>
-      <button onClick={sendData}>Zagraj to słowo</button>
+      <button onClick={playLetters?sendData:()=>{}} style={playLetters?{backgroundColor:"green"}:{backgroundColor:"red"}} >Zagraj to słowo</button>
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>
           row.map((ele, j) => {
-            return <Field i={i} j={j} fieldInfo={ele} />;
+            return <Field key={`${i}_${j}`} i={i} j={j} fieldInfo={ele} gameLogic={gameLogic} />;
           })
         )}
       </div>
-      <div className="gamePage_hand">
+      <div className="gamePage__hand">
           {lettersInHand.map(ele=>{
-            return <LetterInHand key={ele.id} id={ele.id} letter={ele.letter} />
+            return <LetterInHand key={ele.id} id={ele.id} letter={ele.letter} selectedLetter={selectedLetter} setSelectedLetter={setSelectedLetter} />
           })}
       </div>
     </div>
