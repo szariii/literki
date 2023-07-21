@@ -9,6 +9,7 @@ import settings from "../settings.json";
 import LetterInHand from "../components/gamePage/LetterInHand";
 import axios from "axios";
 import letters from "../data/letters";
+import MainGameLogic from "../components/gamePage/MainGameLogic";
 
 const GamePage = () => {
   const game = useSelector((state: RootState) => state.gameData);
@@ -46,7 +47,7 @@ const GamePage = () => {
   for (let i = 0; i < 15; i++) {
     const row = [];
     for (let j = 0; j < 15; j++) {
-      row.push({ i: i, j: j, letter: "", status: "empty" });
+      row.push({ i: i, j: j, letter: "", empty: true });
     }
     tab.push(row);
   }
@@ -79,7 +80,11 @@ const GamePage = () => {
   const [lettersInHand,setLettersInHand]=useState<Array<LetterInHandInterface>>(lettersInHandTemporary)
   const [selectedLetter,setSelectedLetter] = useState(-1)
 
-  const gameLogic=()=>{}
+  const mainGameLogic = MainGameLogic().mainStartGame
+  const gameLogic=()=>{
+    setPlayLetters(false)
+    //mainGameLogic(setPlayLetters)
+  }
 
 
 
@@ -105,7 +110,7 @@ const GamePage = () => {
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>
           row.map((ele, j) => {
-            return <Field key={`${i}_${j}`} i={i} j={j} fieldInfo={ele} gameLogic={gameLogic} />;
+            return <Field setSelectedLetter={setSelectedLetter} setLettersInHand={setLettersInHand} lettersInHand={lettersInHand} setGameSendInformation={setGameSendInformation} key={`${i}_${j}`} i={i} j={j} fieldInfo={ele} gameLogic={gameLogic} gameSendInformation={gameSendInformation} playLetters={playLetters} selectedLetter={selectedLetter} />;
           })
         )}
       </div>

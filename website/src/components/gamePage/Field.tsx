@@ -1,32 +1,103 @@
-import { FieldInfo } from "../../interfaces"
-import "../../style/gamePage/field.scss"
+import {
+  FieldInfo,
+  GameSendInformation,
+  LetterInHandInterface,
+} from "../../interfaces";
+import "../../style/gamePage/field.scss";
 
-import { useSelector } from "react-redux"
-import { RootState } from "../../redux/store"
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
-const Field = ({fieldInfo,i,j,gameLogic}:Field) =>{
-    const game = useSelector((state:RootState)=>state.gameData)
-    
-    let className=""
-    game.bonusPlaces.map(ele=>{
-        if(ele.i===i && ele.j===j){
-            className=`--${ele.type}`
-        }
-    })
+const Field = ({
+  fieldInfo,
+  i,
+  j,
+  gameLogic,
+  gameSendInformation,
+  setGameSendInformation,
+  selectedLetter,
+  lettersInHand,
+  setLettersInHand,
+  setSelectedLetter
+}: Field) => {
+  const game = useSelector((state: RootState) => state.gameData);
 
-    if(i===7&&j===7){
-        className="--start"
+  let className = "";
+  game.bonusPlaces.map((ele) => {
+    if (ele.i === i && ele.j === j) {
+      className = `--${ele.type}`;
     }
+  });
 
-    return(
-        <div className={`field${className}`} ><h4>{fieldInfo.letter}</h4></div>
-    )
-}
-export default Field
+  if (i === 7 && j === 7) {
+    className = "--start";
+  }
 
-interface Field{
-    fieldInfo:FieldInfo,
-    i:number
-    j:number
-    gameLogic:Function
+  const clickHandler = () => {
+    if (fieldInfo.letter === "") {
+      let boardTemporary = gameSendInformation.board;
+      let letter = "";
+      lettersInHand.map((ele) =>
+        ele.id === selectedLetter ? (letter = ele.letter) : ""
+      );
+      boardTemporary[i][j] = {
+        ...gameSendInformation.board[i][j],
+        letter: letter,
+      };
+
+      setLettersInHand(lettersInHand.filter(ele=>ele.id!==selectedLetter))
+      setSelectedLetter(-1)
+      setGameSendInformation({
+        ...gameSendInformation,
+        board: [...gameSendInformation.board],
+      });
+    } else {
+        let maxIndex=0
+        lettersInHand.map(ele=>ele.id>=maxIndex?maxIndex=ele.id+1:"")
+        console.log(maxIndex)
+        console.log(fieldInfo.letter)
+        setLettersInHand([...lettersInHand,{id:maxIndex,letter:fieldInfo.letter}])
+
+        let boardTemporary = gameSendInformation.board;
+        boardTemporary[i][j]={empty:true, letter:""}
+
+        setGameSendInformation({
+            ...gameSendInformation,
+            board: boardTemporary,
+          });
+    }
+    gameLogic();
+  };
+
+  return (
+    <div onClick={gameSendInformation.board[i][j].empty ? clickHandler : ()=>{} } className={`field${className}`}>
+      <h4
+        style={gameSendInformation.board[i][j].empty ? { color: "green" } : {}}
+      >
+        {fieldInfo.letter}
+      </h4>
+    </div>
+  );
+};
+export default Field;
+
+interface Field {
+  fieldInfo: FieldInfo;
+  i: number;
+  j: number;
+  gameLogic: Function;
+  gameSendInformation: GameSendInformation;
+  playLetters: boolean;
+  setGameSendInformation: React.Dispatch<
+    React.SetStateAction<{
+      board: FieldInfo[][];
+      player1: number;
+      player2: number;
+      letters: number;
+    }>
+  >;
+  selectedLetter: number;
+  lettersInHand: LetterInHandInterface[];
+  setLettersInHand:React.Dispatch<React.SetStateAction<LetterInHandInterface[]>>
+  setSelectedLetter:React.Dispatch<React.SetStateAction<number>>
 }

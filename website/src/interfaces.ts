@@ -22,7 +22,7 @@ export interface RoomPlayerInfo {
 
 export interface FieldInfo {
   letter: string;
-  status: string;
+  empty: boolean;
 }
 
 export interface BonusPlace{
@@ -39,4 +39,11 @@ export interface PointsForLetter{
 export interface LetterInHandInterface{
   letter:string
   id:number
+}
+
+export interface GameSendInformation{
+  board: FieldInfo[][];
+  player1: number;
+  player2: number;
+  letters: number;
 }

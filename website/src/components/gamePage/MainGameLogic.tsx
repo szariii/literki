@@ -1,7 +1,9 @@
-const GameLogic=()=>{
-    const startGame=()=>{
-        
+const MainGameLogic=()=>{
+    const mainStartGame=()=>{
+
     }
+
+     return {mainStartGame}
 }
 
-export default GameLogic
+export default MainGameLogic
