@@ -81,9 +81,11 @@ const GamePage = () => {
   const [selectedLetter,setSelectedLetter] = useState(-1)
 
   const mainGameLogic = MainGameLogic().mainStartGame
+
   const gameLogic=()=>{
+    console.log("test")
     setPlayLetters(false)
-    //mainGameLogic(setPlayLetters)
+    mainGameLogic(gameSendInformation,setPlayLetters)
   }
 
 

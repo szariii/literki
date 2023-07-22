@@ -23,6 +23,8 @@ export interface RoomPlayerInfo {
 export interface FieldInfo {
   letter: string;
   empty: boolean;
+  i:number
+  j:number
 }
 
 export interface BonusPlace{

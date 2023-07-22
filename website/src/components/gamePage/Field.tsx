@@ -18,7 +18,7 @@ const Field = ({
   selectedLetter,
   lettersInHand,
   setLettersInHand,
-  setSelectedLetter
+  setSelectedLetter,
 }: Field) => {
   const game = useSelector((state: RootState) => state.gameData);
 
@@ -35,42 +35,54 @@ const Field = ({
 
   const clickHandler = () => {
     if (fieldInfo.letter === "") {
-      let boardTemporary = gameSendInformation.board;
-      let letter = "";
-      lettersInHand.map((ele) =>
-        ele.id === selectedLetter ? (letter = ele.letter) : ""
-      );
-      boardTemporary[i][j] = {
-        ...gameSendInformation.board[i][j],
-        letter: letter,
-      };
+      if (selectedLetter !== -1) {
+        let boardTemporary = gameSendInformation.board;
+        let letter = "";
+        lettersInHand.map((ele) =>
+          ele.id === selectedLetter ? (letter = ele.letter) : ""
+        );
+        boardTemporary[i][j] = {
+          ...gameSendInformation.board[i][j],
+          letter: letter,
+        };
 
-      setLettersInHand(lettersInHand.filter(ele=>ele.id!==selectedLetter))
-      setSelectedLetter(-1)
+        setLettersInHand(
+          lettersInHand.filter((ele) => ele.id !== selectedLetter)
+        );
+        setSelectedLetter(-1);
+        setGameSendInformation({
+          ...gameSendInformation,
+          board: [...gameSendInformation.board],
+        });
+      }
+    } else {
+      let maxIndex = 0;
+      lettersInHand.map((ele) =>
+        ele.id >= maxIndex ? (maxIndex = ele.id + 1) : ""
+      );
+      console.log(maxIndex);
+      console.log(fieldInfo.letter);
+      setLettersInHand([
+        ...lettersInHand,
+        { id: maxIndex, letter: fieldInfo.letter },
+      ]);
+
+      let boardTemporary = gameSendInformation.board;
+      boardTemporary[i][j] = {...gameSendInformation.board[i][j], letter: "" };
+
       setGameSendInformation({
         ...gameSendInformation,
-        board: [...gameSendInformation.board],
+        board: boardTemporary,
       });
-    } else {
-        let maxIndex=0
-        lettersInHand.map(ele=>ele.id>=maxIndex?maxIndex=ele.id+1:"")
-        console.log(maxIndex)
-        console.log(fieldInfo.letter)
-        setLettersInHand([...lettersInHand,{id:maxIndex,letter:fieldInfo.letter}])
-
-        let boardTemporary = gameSendInformation.board;
-        boardTemporary[i][j]={empty:true, letter:""}
-
-        setGameSendInformation({
-            ...gameSendInformation,
-            board: boardTemporary,
-          });
     }
     gameLogic();
   };
 
   return (
-    <div onClick={gameSendInformation.board[i][j].empty ? clickHandler : ()=>{} } className={`field${className}`}>
+    <div
+      onClick={gameSendInformation.board[i][j].empty ? clickHandler : () => {}}
+      className={`field${className}`}
+    >
       <h4
         style={gameSendInformation.board[i][j].empty ? { color: "green" } : {}}
       >
@@ -98,6 +110,8 @@ interface Field {
   >;
   selectedLetter: number;
   lettersInHand: LetterInHandInterface[];
-  setLettersInHand:React.Dispatch<React.SetStateAction<LetterInHandInterface[]>>
-  setSelectedLetter:React.Dispatch<React.SetStateAction<number>>
+  setLettersInHand: React.Dispatch<
+    React.SetStateAction<LetterInHandInterface[]>
+  >;
+  setSelectedLetter: React.Dispatch<React.SetStateAction<number>>;
 }
