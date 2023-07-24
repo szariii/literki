@@ -3,6 +3,75 @@ import { GameSendInformation } from "../../interfaces";
 import settings from "../../settings.json";
 
 const MainGameLogic = () => {
+  const findWordHorizontally = (
+    gameSendInformation: GameSendInformation,
+    i: number,
+    j: number,
+    firstMove: boolean
+  ) => {
+    let word = gameSendInformation.board[i][j].letter;
+    let jIndexTemporary =j - 1;
+    let condition = false;
+    if (i === 7 && j === 7) {
+      condition = true;
+    }
+    while (jIndexTemporary >= 0) {
+      if (gameSendInformation.board[i][jIndexTemporary].letter !== "") {
+        word = gameSendInformation.board[i][jIndexTemporary].letter + word;
+        if (firstMove) {
+          if (i === 7 && jIndexTemporary === 7) {
+            condition = true;
+          }
+        } else {
+          if (!gameSendInformation.board[i][jIndexTemporary].empty) {
+            condition = true;
+          }
+        }
+      } else {
+        break;
+      }
+      jIndexTemporary--;
+    }
+
+    const startIndex = {
+      i: i,
+      j: jIndexTemporary+1,
+    };
+
+    jIndexTemporary = j + 1;
+    while (jIndexTemporary < 15) {
+      if (gameSendInformation.board[i][jIndexTemporary].letter !== "") {
+        word = word + gameSendInformation.board[i][jIndexTemporary].letter;
+        if (firstMove) {
+          if (i === 7 && jIndexTemporary === 7) {
+            condition = true;
+          }
+        } else {
+          if (!gameSendInformation.board[i][jIndexTemporary].empty) {
+            condition = true;
+          }
+        }
+      } else {
+        break;
+      }
+      jIndexTemporary++;
+    }
+
+    const endIndex = {
+      i: i,
+      j: jIndexTemporary-1,
+    };
+
+    const wordToArray: CheckWord = {
+      word: word,
+      start: startIndex,
+      end: endIndex,
+      condition: condition,
+    };
+
+    return wordToArray;
+  };
+
   const findWordVertically = (
     gameSendInformation: GameSendInformation,
     i: number,
@@ -12,22 +81,21 @@ const MainGameLogic = () => {
     let word = gameSendInformation.board[i][j].letter;
     let iIndexTemporary = i - 1;
     let condition = false;
-    if(i===7 && j===7){
-      condition=true
+    if (i === 7 && j === 7) {
+      condition = true;
     }
     while (iIndexTemporary >= 0) {
       if (gameSendInformation.board[iIndexTemporary][j].letter !== "") {
         word = gameSendInformation.board[iIndexTemporary][j].letter + word;
-        if(firstMove){
+        if (firstMove) {
           if (iIndexTemporary === 7 && j === 7) {
             condition = true;
           }
-        }else{
-          if(!gameSendInformation.board[iIndexTemporary][j].empty){
-            condition=true
+        } else {
+          if (!gameSendInformation.board[iIndexTemporary][j].empty) {
+            condition = true;
           }
         }
-
       } else {
         break;
       }
@@ -35,7 +103,7 @@ const MainGameLogic = () => {
     }
 
     const startIndex = {
-      i: iIndexTemporary,
+      i: iIndexTemporary+1,
       j: j,
     };
 
@@ -43,13 +111,13 @@ const MainGameLogic = () => {
     while (iIndexTemporary < 15) {
       if (gameSendInformation.board[iIndexTemporary][j].letter !== "") {
         word = word + gameSendInformation.board[iIndexTemporary][j].letter;
-        if(firstMove){
+        if (firstMove) {
           if (iIndexTemporary === 7 && j === 7) {
             condition = true;
           }
-        }else{
-          if(!gameSendInformation.board[iIndexTemporary][j].empty){
-            condition=true
+        } else {
+          if (!gameSendInformation.board[iIndexTemporary][j].empty) {
+            condition = true;
           }
         }
       } else {
@@ -59,7 +127,7 @@ const MainGameLogic = () => {
     }
 
     const endIndex = {
-      i: iIndexTemporary,
+      i: iIndexTemporary-1,
       j: j,
     };
 
@@ -92,11 +160,17 @@ const MainGameLogic = () => {
       if (gameSendInformation.board[7][7].letter === "") return;
     }
 
+    let wordsCreatedSuccessfully = true
+
     const wordsArray: Array<WordToArray> = [];
 
     gameSendInformation.board.map((row, i) =>
       row.map((field, j) => {
         if (field.empty && field.letter !== "") {
+
+          let createdWord=false
+
+
           const wordVertically = findWordVertically(
             gameSendInformation,
             i,
@@ -104,38 +178,72 @@ const MainGameLogic = () => {
             firstMove
           );
 
-          if (!wordVertically.condition) {
+          if (wordVertically.condition && wordVertically.word.length>1) {
+            createdWord=true
             //setPlayLetters(false);
-            console.log("warunek not")
-            return;
-          }
+            let wordExist = false;
 
-          let wordExist = false;
+            wordsArray.map((word) => {
+              if (
+                JSON.stringify(word.start) ===
+                  JSON.stringify(wordVertically.start) &&
+                JSON.stringify(word.end) === JSON.stringify(wordVertically.end)
+              ) {
+                wordExist = true;
+              }
+            });
 
-          wordsArray.map((word) => {
-            if (
-              JSON.stringify(word.start) ===
-                JSON.stringify(wordVertically.start) &&
-              JSON.stringify(word.end) === JSON.stringify(wordVertically.end)
-            ) {
-              wordExist = true;
+            if (!wordExist) {
+              wordsArray.push(wordVertically);
             }
-          });
+          }
+          const wordHorizontally = findWordHorizontally(
+            gameSendInformation,
+            i,
+            j,
+            firstMove
+          );
 
-          if (!wordExist) {
-            wordsArray.push(wordVertically);
+          console.log(wordHorizontally)
+
+          if(wordHorizontally.condition && wordHorizontally.word.length>1){
+            createdWord=true
+            let wordExist = false;
+
+            wordsArray.map((word) => {
+              if (
+                JSON.stringify(word.start) ===
+                  JSON.stringify(wordHorizontally.start) &&
+                JSON.stringify(word.end) === JSON.stringify(wordHorizontally.end)
+              ) {
+                wordExist = true;
+              }
+            });
+
+            if (!wordExist) {
+              wordsArray.push(wordHorizontally);
+            }
+          }
+          if(!createdWord){
+            wordsCreatedSuccessfully=false
           }
 
-          //const WordVertically;
         }
       })
     );
 
+    if(wordsCreatedSuccessfully && wordsArray.length>0){
+
+      console.log("DOBRZE")
+
+      // const data = await axios.get(`${settings.address}/checkWords`);
+      // console.log(data);
+      // setPlayLetters(true);
+    }
+
     console.log(wordsArray);
 
-    const data = await axios.get(`${settings.address}/checkWords`);
-    console.log(data);
-    setPlayLetters(true);
+
   };
 
   return { mainStartGame };
