@@ -15,8 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const arrayWithWords_1 = __importDefault(require("../data/arrayWithWords"));
 const checkWords = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const words = req.query.words;
+    console.log(req.query);
     console.log(words);
-    console.log(arrayWithWords_1.default);
-    res.send("no czesc");
+    let flag = true;
+    words.map(ele => {
+        if (!arrayWithWords_1.default.includes(ele)) {
+            flag = false;
+        }
+    });
+    res.send({ success: flag });
 });
 exports.default = checkWords;

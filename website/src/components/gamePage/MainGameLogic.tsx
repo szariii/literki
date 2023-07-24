@@ -1,8 +1,12 @@
 import axios from "axios";
 import { GameSendInformation } from "../../interfaces";
 import settings from "../../settings.json";
+import pointsForData from "../../data/pointsForData";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const MainGameLogic = () => {
+  const game = useSelector((data:RootState)=>data.gameData)
   const findWordHorizontally = (
     gameSendInformation: GameSendInformation,
     i: number,
@@ -235,10 +239,22 @@ const MainGameLogic = () => {
     if(wordsCreatedSuccessfully && wordsArray.length>0){
 
       console.log("DOBRZE")
+      const onlyWords:string[] = []
+      wordsArray.map(ele=>{
+        onlyWords.push(ele.word)
+      })
+      const unicArray = [...new Set(onlyWords)]
+      console.log(unicArray)
 
-      // const data = await axios.get(`${settings.address}/checkWords`);
-      // console.log(data);
-      // setPlayLetters(true);
+      const data = await axios.get(`${settings.address}/checkWords`, {params:{words:unicArray}});
+      console.log(data);
+      if(data.data.success){
+        console.log("dziala")
+        setPlayLetters(true);
+      }else{
+        console.log("nie dziala")
+      }
+      
     }
 
     console.log(wordsArray);
