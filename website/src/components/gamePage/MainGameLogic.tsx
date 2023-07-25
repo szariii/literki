@@ -16,6 +16,7 @@ const MainGameLogic = () => {
     let word = gameSendInformation.board[i][j].letter;
     let jIndexTemporary =j - 1;
     let condition = false;
+    const bonusPlaces:BonusPlacesInWord[]=[]
     if (i === 7 && j === 7) {
       condition = true;
     }
@@ -31,6 +32,13 @@ const MainGameLogic = () => {
             condition = true;
           }
         }
+
+        game.bonusPlaces.map(ele=>{
+          if(ele.i===i && ele.j===jIndexTemporary){
+            bonusPlaces.push({letter:gameSendInformation.board[i][jIndexTemporary].letter, bonus:ele.type})
+          }
+        })
+
       } else {
         break;
       }
@@ -55,6 +63,13 @@ const MainGameLogic = () => {
             condition = true;
           }
         }
+
+        game.bonusPlaces.map(ele=>{
+          if(ele.i===i && ele.j===jIndexTemporary){
+            bonusPlaces.push({letter:gameSendInformation.board[i][jIndexTemporary].letter, bonus:ele.type})
+          }
+        })
+
       } else {
         break;
       }
@@ -71,6 +86,7 @@ const MainGameLogic = () => {
       start: startIndex,
       end: endIndex,
       condition: condition,
+      bonusPlaces:bonusPlaces
     };
 
     return wordToArray;
@@ -85,6 +101,7 @@ const MainGameLogic = () => {
     let word = gameSendInformation.board[i][j].letter;
     let iIndexTemporary = i - 1;
     let condition = false;
+    const bonusPlaces:BonusPlacesInWord[]=[]
     if (i === 7 && j === 7) {
       condition = true;
     }
@@ -100,6 +117,13 @@ const MainGameLogic = () => {
             condition = true;
           }
         }
+
+        game.bonusPlaces.map(ele=>{
+          if(ele.i===iIndexTemporary && ele.j===j){
+            bonusPlaces.push({letter:gameSendInformation.board[iIndexTemporary][j].letter, bonus:ele.type})
+          }
+        })
+
       } else {
         break;
       }
@@ -124,6 +148,13 @@ const MainGameLogic = () => {
             condition = true;
           }
         }
+
+        game.bonusPlaces.map(ele=>{
+          if(ele.i===iIndexTemporary && ele.j===j){
+            bonusPlaces.push({letter:gameSendInformation.board[iIndexTemporary][j].letter, bonus:ele.type})
+          }
+        })
+
       } else {
         break;
       }
@@ -140,6 +171,7 @@ const MainGameLogic = () => {
       start: startIndex,
       end: endIndex,
       condition: condition,
+      bonusPlaces:bonusPlaces
     };
 
     return wordToArray;
@@ -166,7 +198,7 @@ const MainGameLogic = () => {
 
     let wordsCreatedSuccessfully = true
 
-    const wordsArray: Array<WordToArray> = [];
+    const wordsArray: Array<CheckWord> = [];
 
     gameSendInformation.board.map((row, i) =>
       row.map((field, j) => {
@@ -265,17 +297,17 @@ const MainGameLogic = () => {
   return { mainStartGame };
 };
 
-interface WordToArray {
-  word: string;
-  start: {
-    i: number;
-    j: number;
-  };
-  end: {
-    i: number;
-    j: number;
-  };
-}
+// interface WordToArray {
+//   word: string;
+//   start: {
+//     i: number;
+//     j: number;
+//   };
+//   end: {
+//     i: number;
+//     j: number;
+//   };
+// }
 
 interface CheckWord {
   word: string;
@@ -288,6 +320,12 @@ interface CheckWord {
     j: number;
   };
   condition: boolean;
+  bonusPlaces:BonusPlacesInWord[]
+}
+
+interface BonusPlacesInWord{
+  letter:string
+  bonus:string
 }
 
 export default MainGameLogic;

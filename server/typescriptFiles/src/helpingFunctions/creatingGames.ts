@@ -23,7 +23,7 @@ const creatingGames = () => {
       while(!flag){
         const i = getRandomInt(15)
         const j = getRandomInt(15)
-        if(i!==7 && j!==7){
+        if(i!==7 || j!==7){
           flag = true
           bonusPlaces.map(place=>{
             if(place.i===i && place.j===j){
@@ -42,7 +42,7 @@ const creatingGames = () => {
 
 
 
-    tableWithPlayingRooms.push({
+    tableWithPlayingRooms.unshift({
       status: "connecting players",
       id: id,
       player1:{ id: player1.id,nick:player1.nick },
