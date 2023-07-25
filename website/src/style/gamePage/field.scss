@@ -16,21 +16,21 @@
 
     &--3xWord{
         @extend .field;
-        background-color: rgb(255, 5, 222);
+        background-color: rgb(194, 142, 187);
     }
 
     &--2xWord{
         @extend .field;
-        background-color: $pink-color;
+        background-color: rgb(163, 198, 172);
     }
 
     &--3xLetter{
         @extend .field;
-        background-color: rgb(207, 225, 46);
+        background-color: rgb(197, 166, 166);
     }
 
     &--2xLetter{
         @extend .field;
-        background-color: $blue-color;
+        background-color: rgb(136, 180, 200);
     }
 }

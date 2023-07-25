@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 const MainGameLogic = () => {
-  const game = useSelector((data:RootState)=>data.gameData)
+  const game = useSelector((data: RootState) => data.gameData);
   const findWordHorizontally = (
     gameSendInformation: GameSendInformation,
     i: number,
@@ -14,12 +14,22 @@ const MainGameLogic = () => {
     firstMove: boolean
   ) => {
     let word = gameSendInformation.board[i][j].letter;
-    let jIndexTemporary =j - 1;
+    let jIndexTemporary = j - 1;
     let condition = false;
-    const bonusPlaces:BonusPlacesInWord[]=[]
+    const bonusPlaces: BonusPlacesInWord[] = [];
     if (i === 7 && j === 7) {
       condition = true;
     }
+
+    game.bonusPlaces.map((ele) => {
+      if (ele.i === i && ele.j === j) {
+        bonusPlaces.push({
+          letter: gameSendInformation.board[i][j].letter,
+          bonus: ele.type,
+        });
+      }
+    });
+
     while (jIndexTemporary >= 0) {
       if (gameSendInformation.board[i][jIndexTemporary].letter !== "") {
         word = gameSendInformation.board[i][jIndexTemporary].letter + word;
@@ -33,12 +43,14 @@ const MainGameLogic = () => {
           }
         }
 
-        game.bonusPlaces.map(ele=>{
-          if(ele.i===i && ele.j===jIndexTemporary){
-            bonusPlaces.push({letter:gameSendInformation.board[i][jIndexTemporary].letter, bonus:ele.type})
+        game.bonusPlaces.map((ele) => {
+          if (ele.i === i && ele.j === jIndexTemporary) {
+            bonusPlaces.push({
+              letter: gameSendInformation.board[i][jIndexTemporary].letter,
+              bonus: ele.type,
+            });
           }
-        })
-
+        });
       } else {
         break;
       }
@@ -47,7 +59,7 @@ const MainGameLogic = () => {
 
     const startIndex = {
       i: i,
-      j: jIndexTemporary+1,
+      j: jIndexTemporary + 1,
     };
 
     jIndexTemporary = j + 1;
@@ -64,12 +76,14 @@ const MainGameLogic = () => {
           }
         }
 
-        game.bonusPlaces.map(ele=>{
-          if(ele.i===i && ele.j===jIndexTemporary){
-            bonusPlaces.push({letter:gameSendInformation.board[i][jIndexTemporary].letter, bonus:ele.type})
+        game.bonusPlaces.map((ele) => {
+          if (ele.i === i && ele.j === jIndexTemporary) {
+            bonusPlaces.push({
+              letter: gameSendInformation.board[i][jIndexTemporary].letter,
+              bonus: ele.type,
+            });
           }
-        })
-
+        });
       } else {
         break;
       }
@@ -78,7 +92,7 @@ const MainGameLogic = () => {
 
     const endIndex = {
       i: i,
-      j: jIndexTemporary-1,
+      j: jIndexTemporary - 1,
     };
 
     const wordToArray: CheckWord = {
@@ -86,7 +100,7 @@ const MainGameLogic = () => {
       start: startIndex,
       end: endIndex,
       condition: condition,
-      bonusPlaces:bonusPlaces
+      bonusPlaces: bonusPlaces,
     };
 
     return wordToArray;
@@ -101,10 +115,20 @@ const MainGameLogic = () => {
     let word = gameSendInformation.board[i][j].letter;
     let iIndexTemporary = i - 1;
     let condition = false;
-    const bonusPlaces:BonusPlacesInWord[]=[]
+    const bonusPlaces: BonusPlacesInWord[] = [];
     if (i === 7 && j === 7) {
       condition = true;
     }
+
+    game.bonusPlaces.map((ele) => {
+      if (ele.i === i && ele.j === j) {
+        bonusPlaces.push({
+          letter: gameSendInformation.board[i][j].letter,
+          bonus: ele.type,
+        });
+      }
+    });
+
     while (iIndexTemporary >= 0) {
       if (gameSendInformation.board[iIndexTemporary][j].letter !== "") {
         word = gameSendInformation.board[iIndexTemporary][j].letter + word;
@@ -117,13 +141,15 @@ const MainGameLogic = () => {
             condition = true;
           }
         }
-
-        game.bonusPlaces.map(ele=>{
-          if(ele.i===iIndexTemporary && ele.j===j){
-            bonusPlaces.push({letter:gameSendInformation.board[iIndexTemporary][j].letter, bonus:ele.type})
+        console.log(iIndexTemporary, j);
+        game.bonusPlaces.map((ele) => {
+          if (ele.i === iIndexTemporary && ele.j === j) {
+            bonusPlaces.push({
+              letter: gameSendInformation.board[iIndexTemporary][j].letter,
+              bonus: ele.type,
+            });
           }
-        })
-
+        });
       } else {
         break;
       }
@@ -131,7 +157,7 @@ const MainGameLogic = () => {
     }
 
     const startIndex = {
-      i: iIndexTemporary+1,
+      i: iIndexTemporary + 1,
       j: j,
     };
 
@@ -149,12 +175,14 @@ const MainGameLogic = () => {
           }
         }
 
-        game.bonusPlaces.map(ele=>{
-          if(ele.i===iIndexTemporary && ele.j===j){
-            bonusPlaces.push({letter:gameSendInformation.board[iIndexTemporary][j].letter, bonus:ele.type})
+        game.bonusPlaces.map((ele) => {
+          if (ele.i === iIndexTemporary && ele.j === j) {
+            bonusPlaces.push({
+              letter: gameSendInformation.board[iIndexTemporary][j].letter,
+              bonus: ele.type,
+            });
           }
-        })
-
+        });
       } else {
         break;
       }
@@ -162,7 +190,7 @@ const MainGameLogic = () => {
     }
 
     const endIndex = {
-      i: iIndexTemporary-1,
+      i: iIndexTemporary - 1,
       j: j,
     };
 
@@ -171,7 +199,7 @@ const MainGameLogic = () => {
       start: startIndex,
       end: endIndex,
       condition: condition,
-      bonusPlaces:bonusPlaces
+      bonusPlaces: bonusPlaces,
     };
 
     return wordToArray;
@@ -179,7 +207,8 @@ const MainGameLogic = () => {
 
   const mainStartGame = async (
     gameSendInformation: GameSendInformation,
-    setPlayLetters: React.Dispatch<React.SetStateAction<boolean>>
+    setPlayLetters: React.Dispatch<React.SetStateAction<boolean>>,
+    setAddPoints: React.Dispatch<React.SetStateAction<number>>
   ) => {
     console.log(gameSendInformation.board);
     let firstMove = true;
@@ -196,16 +225,14 @@ const MainGameLogic = () => {
       if (gameSendInformation.board[7][7].letter === "") return;
     }
 
-    let wordsCreatedSuccessfully = true
+    let wordsCreatedSuccessfully = true;
 
     const wordsArray: Array<CheckWord> = [];
 
     gameSendInformation.board.map((row, i) =>
       row.map((field, j) => {
         if (field.empty && field.letter !== "") {
-
-          let createdWord=false
-
+          let createdWord = false;
 
           const wordVertically = findWordVertically(
             gameSendInformation,
@@ -214,8 +241,8 @@ const MainGameLogic = () => {
             firstMove
           );
 
-          if (wordVertically.condition && wordVertically.word.length>1) {
-            createdWord=true
+          if (wordVertically.condition && wordVertically.word.length > 1) {
+            createdWord = true;
             //setPlayLetters(false);
             let wordExist = false;
 
@@ -240,17 +267,18 @@ const MainGameLogic = () => {
             firstMove
           );
 
-          console.log(wordHorizontally)
+          console.log(wordHorizontally);
 
-          if(wordHorizontally.condition && wordHorizontally.word.length>1){
-            createdWord=true
+          if (wordHorizontally.condition && wordHorizontally.word.length > 1) {
+            createdWord = true;
             let wordExist = false;
 
             wordsArray.map((word) => {
               if (
                 JSON.stringify(word.start) ===
                   JSON.stringify(wordHorizontally.start) &&
-                JSON.stringify(word.end) === JSON.stringify(wordHorizontally.end)
+                JSON.stringify(word.end) ===
+                  JSON.stringify(wordHorizontally.end)
               ) {
                 wordExist = true;
               }
@@ -260,38 +288,71 @@ const MainGameLogic = () => {
               wordsArray.push(wordHorizontally);
             }
           }
-          if(!createdWord){
-            wordsCreatedSuccessfully=false
+          if (!createdWord) {
+            wordsCreatedSuccessfully = false;
           }
-
         }
       })
     );
 
-    if(wordsCreatedSuccessfully && wordsArray.length>0){
+    if (wordsCreatedSuccessfully && wordsArray.length > 0) {
+      console.log("DOBRZE");
+      const onlyWords: string[] = [];
+      wordsArray.map((ele) => {
+        onlyWords.push(ele.word);
+      });
+      const unicArray = [...new Set(onlyWords)];
+      console.log(unicArray);
 
-      console.log("DOBRZE")
-      const onlyWords:string[] = []
-      wordsArray.map(ele=>{
-        onlyWords.push(ele.word)
-      })
-      const unicArray = [...new Set(onlyWords)]
-      console.log(unicArray)
-
-      const data = await axios.get(`${settings.address}/checkWords`, {params:{words:unicArray}});
+      const data = await axios.get(`${settings.address}/checkWords`, {
+        params: { words: unicArray },
+      });
       console.log(data);
-      if(data.data.success){
-        console.log("dziala")
+      //data.data.success
+      if (data.data.success) {
+        console.log("dziala");
+        let movePoints = 0;
+        wordsArray.map((word) => {
+          let basePoints = 0;
+          let arrWithChar = word.word.split("");
+          arrWithChar.map((char) => {
+            pointsForData.map((points) => {
+              if (points.letters.includes(char)) {
+                basePoints += points.points;
+              }
+            });
+          });
+          movePoints+=basePoints
+          word.bonusPlaces.map((bonusPlace) => {
+            if (bonusPlace.bonus === "3xWord") {
+              movePoints+=basePoints*2
+            } else if (bonusPlace.bonus === "2xWord") {
+              movePoints+=basePoints
+            } else if (bonusPlace.bonus === "3xLetter") {
+              pointsForData.map(points=>{
+                if(points.letters.includes(bonusPlace.letter)){
+                  movePoints+=points.points*2
+                }
+              })
+            } else if (bonusPlace.bonus === "2xLetter") {
+              pointsForData.map(points=>{
+                if(points.letters.includes(bonusPlace.letter)){
+                  movePoints+=points.points
+                }
+              })
+            }
+          });
+        });
+
+        setAddPoints(movePoints);
+
         setPlayLetters(true);
-      }else{
-        console.log("nie dziala")
+      } else {
+        console.log("nie dziala");
       }
-      
     }
 
     console.log(wordsArray);
-
-
   };
 
   return { mainStartGame };
@@ -320,12 +381,12 @@ interface CheckWord {
     j: number;
   };
   condition: boolean;
-  bonusPlaces:BonusPlacesInWord[]
+  bonusPlaces: BonusPlacesInWord[];
 }
 
-interface BonusPlacesInWord{
-  letter:string
-  bonus:string
+interface BonusPlacesInWord {
+  letter: string;
+  bonus: string;
 }
 
 export default MainGameLogic;

@@ -15,6 +15,7 @@ const GamePage = () => {
   const game = useSelector((state: RootState) => state.gameData);
   const user = useSelector((state: RootState) => state.userData);
   const [playLetters,setPlayLetters]=useState(false)
+  const [addPoints,setAddPoints] = useState(0)
 
   const URL = settings.socketAddress;
   const socket = io(URL, {
@@ -38,9 +39,7 @@ const GamePage = () => {
 
   const sendData = async() => {
     console.log("emit");
-    const test = await axios.get(`${settings.address}/checkWords`,{params:{data:"haha"}})
-    console.log(test)
-    //socket.emit("send", { room: game.id, data: "bla" });
+    socket.emit("send", { room: game.id, data: "bla" });
   };
 
   const tab: FieldInfo[][] = [];
@@ -84,8 +83,9 @@ const GamePage = () => {
 
   const gameLogic=()=>{
     console.log("test")
+    setAddPoints(0)
     setPlayLetters(false)
-    mainGameLogic(gameSendInformation,setPlayLetters)
+    mainGameLogic(gameSendInformation,setPlayLetters,setAddPoints)
   }
 
 
@@ -108,7 +108,7 @@ const GamePage = () => {
           <h4 className="gamePage__points">{gameSendInformation.player2}</h4>
         </div>
       </div>
-      <button onClick={playLetters?sendData:()=>{}} style={playLetters?{backgroundColor:"green"}:{backgroundColor:"red"}} >Zagraj to słowo</button>
+      <button onClick={playLetters?sendData:()=>{}} style={playLetters?{backgroundColor:"green"}:{backgroundColor:"red"}} >add {addPoints} points</button>
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>
           row.map((ele, j) => {

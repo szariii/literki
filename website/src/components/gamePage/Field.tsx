@@ -4,7 +4,9 @@ import {
   LetterInHandInterface,
 } from "../../interfaces";
 import "../../style/gamePage/field.scss";
+import pointsForData from "../../data/pointsForData";
 
+import {useState,useEffect} from "react"
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
@@ -21,6 +23,24 @@ const Field = ({
   setSelectedLetter,
 }: Field) => {
   const game = useSelector((state: RootState) => state.gameData);
+  let point = ""
+  pointsForData.map(ele=>{
+    if(ele.letters.includes(fieldInfo.letter)){
+      point= ele.points.toString()
+    }
+  })
+  const [points,setPoints] = useState(point)
+
+  useEffect(()=>{
+    let point = ""
+    pointsForData.map(ele=>{
+      if(ele.letters.includes(fieldInfo.letter)){
+        point= ele.points.toString()
+      }
+    })
+    setPoints(point)
+  },[gameSendInformation])
+
 
   let className = "";
   game.bonusPlaces.map((ele) => {
@@ -86,7 +106,7 @@ const Field = ({
       <h4
         style={gameSendInformation.board[i][j].empty ? { color: "green" } : {}}
       >
-        {fieldInfo.letter}
+        {fieldInfo.letter}<sub >{points}</sub>
       </h4>
     </div>
   );
