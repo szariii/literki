@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import "../style/gamePage/gamePage.scss";
 import Field from "../components/gamePage/Field";
-import { FieldInfo,LetterInHandInterface } from "../interfaces";
+import {
+  FieldInfo,
+  GameSendInformation,
+  LetterInHandInterface,
+} from "../interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { io } from "socket.io-client";
@@ -14,8 +18,8 @@ import MainGameLogic from "../components/gamePage/MainGameLogic";
 const GamePage = () => {
   const game = useSelector((state: RootState) => state.gameData);
   const user = useSelector((state: RootState) => state.userData);
-  const [playLetters,setPlayLetters]=useState(false)
-  const [addPoints,setAddPoints] = useState(0)
+  const [playLetters, setPlayLetters] = useState(false);
+  const [addPoints, setAddPoints] = useState(0);
 
   const URL = settings.socketAddress;
   const socket = io(URL, {
@@ -37,11 +41,6 @@ const GamePage = () => {
     };
   }, []);
 
-  const sendData = async() => {
-    console.log("emit");
-    socket.emit("send", { room: game.id, data: "bla" });
-  };
-
   const tab: FieldInfo[][] = [];
   for (let i = 0; i < 15; i++) {
     const row = [];
@@ -52,8 +51,10 @@ const GamePage = () => {
   }
 
   let startFlag = true;
+  let player: "player1" | "player2" = "player1";
   if (game.player2.id === user._id) {
     startFlag = false;
+    player = "player2";
   }
 
   const [yourTurn, setYourTurn] = useState(startFlag);
@@ -64,31 +65,69 @@ const GamePage = () => {
     letters: 86,
   });
 
-  const getRandomInt=(max:number)=> {
+  const getRandomInt = (max: number) => {
     return Math.floor(Math.random() * max);
+  };
+
+  const lettersInHandTemporary: Array<LetterInHandInterface> = [];
+  for (let i = 0; i < 7; i++) {
+    lettersInHandTemporary.push({ letter: letters[getRandomInt(32)], id: i });
   }
+  console.log(lettersInHandTemporary);
 
+  const [lettersInHand, setLettersInHand] = useState<
+    Array<LetterInHandInterface>
+  >(lettersInHandTemporary);
+  const [selectedLetter, setSelectedLetter] = useState(-1);
 
+  const mainGameLogic = MainGameLogic().mainStartGame;
 
-  const lettersInHandTemporary:Array<LetterInHandInterface> = []
-  for(let i = 0;i<7;i++){
-    lettersInHandTemporary.push({letter:letters[getRandomInt(32)],id:i})
-  }
-  console.log(lettersInHandTemporary)
+  const gameLogic = () => {
+    console.log("test");
+    setAddPoints(0);
+    setPlayLetters(false);
+    mainGameLogic(gameSendInformation, setPlayLetters, setAddPoints);
+  };
 
-  const [lettersInHand,setLettersInHand]=useState<Array<LetterInHandInterface>>(lettersInHandTemporary)
-  const [selectedLetter,setSelectedLetter] = useState(-1)
+  const addLettersToHand = (temporarySendInfo: GameSendInformation) => {
+    const temporaryLettersInHand = lettersInHand;
+    while (temporarySendInfo.letters > 0 && temporaryLettersInHand.length < 7) {
+      temporarySendInfo.letters = temporarySendInfo.letters - 1;
+      let maxIndex = 0;
+      temporaryLettersInHand.map((letter) => {
+        if (maxIndex <= letter.id) {
+          maxIndex = letter.id + 1;
+        }
+      });
 
-  const mainGameLogic = MainGameLogic().mainStartGame
+      temporaryLettersInHand.push({
+        letter: letters[getRandomInt(32)],
+        id: maxIndex,
+      });
+    }
+    setLettersInHand(temporaryLettersInHand);
+    return temporarySendInfo
+  };
 
-  const gameLogic=()=>{
-    console.log("test")
-    setAddPoints(0)
-    setPlayLetters(false)
-    mainGameLogic(gameSendInformation,setPlayLetters,setAddPoints)
-  }
-
-
+  const sendData = async () => {
+    let temporarySendInfo = gameSendInformation;
+    console.log(gameSendInformation);
+    console.log(addPoints);
+    console.log("emit");
+    temporarySendInfo[player] = gameSendInformation[player] + addPoints;
+    temporarySendInfo.board.map((row) => {
+      row.map((letter) => {
+        if (letter.letter !== "" && letter.empty) {
+          letter.empty = false;
+        }
+      });
+    });
+    console.log(temporarySendInfo);
+    temporarySendInfo = addLettersToHand(temporarySendInfo)
+    setGameSendInformation(temporarySendInfo);
+    setAddPoints(0);
+    socket.emit("send", { room: game.id, data: temporarySendInfo });
+  };
 
   return (
     <div className="gamePage">
@@ -108,18 +147,50 @@ const GamePage = () => {
           <h4 className="gamePage__points">{gameSendInformation.player2}</h4>
         </div>
       </div>
-      <button onClick={playLetters?sendData:()=>{}} style={playLetters?{backgroundColor:"green"}:{backgroundColor:"red"}} >add {addPoints} points</button>
+      <button
+        onClick={playLetters ? sendData : () => {}}
+        style={
+          addPoints !== 0
+            ? { backgroundColor: "green" }
+            : { backgroundColor: "red" }
+        }
+      >
+        add {addPoints} points
+      </button>
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>
           row.map((ele, j) => {
-            return <Field setSelectedLetter={setSelectedLetter} setLettersInHand={setLettersInHand} lettersInHand={lettersInHand} setGameSendInformation={setGameSendInformation} key={`${i}_${j}`} i={i} j={j} fieldInfo={ele} gameLogic={gameLogic} gameSendInformation={gameSendInformation} playLetters={playLetters} selectedLetter={selectedLetter} />;
+            return (
+              <Field
+                setSelectedLetter={setSelectedLetter}
+                setLettersInHand={setLettersInHand}
+                lettersInHand={lettersInHand}
+                setGameSendInformation={setGameSendInformation}
+                key={`${i}_${j}`}
+                i={i}
+                j={j}
+                fieldInfo={ele}
+                gameLogic={gameLogic}
+                gameSendInformation={gameSendInformation}
+                playLetters={playLetters}
+                selectedLetter={selectedLetter}
+              />
+            );
           })
         )}
       </div>
       <div className="gamePage__hand">
-          {lettersInHand.map(ele=>{
-            return <LetterInHand key={ele.id} id={ele.id} letter={ele.letter} selectedLetter={selectedLetter} setSelectedLetter={setSelectedLetter} />
-          })}
+        {lettersInHand.map((ele) => {
+          return (
+            <LetterInHand
+              key={ele.id}
+              id={ele.id}
+              letter={ele.letter}
+              selectedLetter={selectedLetter}
+              setSelectedLetter={setSelectedLetter}
+            />
+          );
+        })}
       </div>
     </div>
   );
