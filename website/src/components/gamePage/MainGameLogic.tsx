@@ -208,7 +208,8 @@ const MainGameLogic = () => {
   const mainStartGame = async (
     gameSendInformation: GameSendInformation,
     setPlayLetters: React.Dispatch<React.SetStateAction<boolean>>,
-    setAddPoints: React.Dispatch<React.SetStateAction<number>>
+    setAddPoints: React.Dispatch<React.SetStateAction<number>>,
+    setPutedLettersOnBoard:React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     console.log(gameSendInformation.board);
     let firstMove = true;
@@ -221,18 +222,19 @@ const MainGameLogic = () => {
       });
     });
     console.log(firstMove);
-    if (firstMove) {
-      if (gameSendInformation.board[7][7].letter === "") return;
-    }
+
 
     let wordsCreatedSuccessfully = true;
 
     const wordsArray: Array<CheckWord> = [];
-
+    let putedLetterOnBoardFlag = false
+    console.log(gameSendInformation.board)
     gameSendInformation.board.map((row, i) =>
       row.map((field, j) => {
         if (field.empty && field.letter !== "") {
           let createdWord = false;
+          console.log("wartość flaga zmianma")
+          putedLetterOnBoardFlag=true
 
           const wordVertically = findWordVertically(
             gameSendInformation,
@@ -294,6 +296,11 @@ const MainGameLogic = () => {
         }
       })
     );
+      console.log("puteed", putedLetterOnBoardFlag)
+    setPutedLettersOnBoard(putedLetterOnBoardFlag)
+    if (firstMove) {
+      if (gameSendInformation.board[7][7].letter === "") return;
+    }
 
     if (wordsCreatedSuccessfully && wordsArray.length > 0) {
       console.log("DOBRZE");

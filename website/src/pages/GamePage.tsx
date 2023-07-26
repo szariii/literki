@@ -11,15 +11,20 @@ import { RootState } from "../redux/store";
 import { io } from "socket.io-client";
 import settings from "../settings.json";
 import LetterInHand from "../components/gamePage/LetterInHand";
-import axios from "axios";
 import letters from "../data/letters";
 import MainGameLogic from "../components/gamePage/MainGameLogic";
 
 const GamePage = () => {
+  //console.log('hl')
   const game = useSelector((state: RootState) => state.gameData);
   const user = useSelector((state: RootState) => state.userData);
+  const [changingLetters, setChangingLetters] = useState(false);
+  const [putedLettersOnBoard, setPutedLettersOnBoard] = useState(false);
   const [playLetters, setPlayLetters] = useState(false);
   const [addPoints, setAddPoints] = useState(0);
+  const [selectedLettersToChange, setSelectedLettersToChange] = useState<
+    number[]
+  >([]);
 
   const URL = settings.socketAddress;
   const socket = io(URL, {
@@ -33,7 +38,17 @@ const GamePage = () => {
   }
 
   useEffect(() => {
-    socket.on("send", data);
+    socket.on("send", (data: { room: string; data: GameSendInformation }) => {
+      console.log("data", data);
+      const newData = data.data;
+      setGameSendInformation({
+        ...gameSendInformation,
+        board: newData.board,
+        letters: newData.letters,
+        player1: newData.player1,
+        player2: newData.player2,
+      });
+    });
 
     return () => {
       socket.off("disconnect", data);
@@ -86,7 +101,12 @@ const GamePage = () => {
     console.log("test");
     setAddPoints(0);
     setPlayLetters(false);
-    mainGameLogic(gameSendInformation, setPlayLetters, setAddPoints);
+    mainGameLogic(
+      gameSendInformation,
+      setPlayLetters,
+      setAddPoints,
+      setPutedLettersOnBoard
+    );
   };
 
   const addLettersToHand = (temporarySendInfo: GameSendInformation) => {
@@ -106,7 +126,18 @@ const GamePage = () => {
       });
     }
     setLettersInHand(temporaryLettersInHand);
-    return temporarySendInfo
+    return temporarySendInfo;
+  };
+
+  const changeLettersHandler = () => {
+    console.log("hehhe");
+    setSelectedLetter(-1);
+    setChangingLetters(true);
+  };
+
+  const cancelChangeLettersHandler = () => {
+    setSelectedLettersToChange([]);
+    setChangingLetters(false);
   };
 
   const sendData = async () => {
@@ -123,10 +154,36 @@ const GamePage = () => {
       });
     });
     console.log(temporarySendInfo);
-    temporarySendInfo = addLettersToHand(temporarySendInfo)
+    temporarySendInfo = addLettersToHand(temporarySendInfo);
     setGameSendInformation(temporarySendInfo);
     setAddPoints(0);
     socket.emit("send", { room: game.id, data: temporarySendInfo });
+  };
+
+  const changeLetters = () => {
+    let temporarylettersInHand = lettersInHand;
+    temporarylettersInHand = temporarylettersInHand.filter(
+      (ele) => selectedLettersToChange.includes(ele.id) === false
+    );
+    console.log(temporarylettersInHand);
+    while (temporarylettersInHand.length < 7) {
+      let maxIndex = 0;
+      temporarylettersInHand.map((ele) => {
+        if (maxIndex <= ele.id) {
+          maxIndex = ele.id + 1;
+        }
+      });
+
+      temporarylettersInHand.push({
+        letter: letters[getRandomInt(32)],
+        id: maxIndex,
+      });
+    }
+    console.log(temporarylettersInHand);
+    setSelectedLettersToChange([]);
+    setLettersInHand(temporarylettersInHand);
+
+    socket.emit("send", { room: game.id, data: gameSendInformation });
   };
 
   return (
@@ -147,16 +204,41 @@ const GamePage = () => {
           <h4 className="gamePage__points">{gameSendInformation.player2}</h4>
         </div>
       </div>
-      <button
-        onClick={playLetters ? sendData : () => {}}
-        style={
-          addPoints !== 0
-            ? { backgroundColor: "green" }
-            : { backgroundColor: "red" }
-        }
-      >
-        add {addPoints} points
-      </button>
+      {putedLettersOnBoard ? (
+        ""
+      ) : (
+        <button
+          onClick={
+            yourTurn
+              ? !changingLetters
+                ? changeLettersHandler
+                : changeLetters
+              : () => {}
+          }
+        >
+          Wymień literki
+        </button>
+      )}
+      {changingLetters ? (
+        <button
+          onClick={cancelChangeLettersHandler}
+          style={{ backgroundColor: "red" }}
+        >
+          anuluj
+        </button>
+      ) : (
+        <button
+          onClick={playLetters ? sendData : () => {}}
+          style={
+            addPoints !== 0
+              ? { backgroundColor: "green" }
+              : { backgroundColor: "red" }
+          }
+        >
+          add {addPoints} points
+        </button>
+      )}
+
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>
           row.map((ele, j) => {
@@ -188,6 +270,9 @@ const GamePage = () => {
               letter={ele.letter}
               selectedLetter={selectedLetter}
               setSelectedLetter={setSelectedLetter}
+              selectedLettersToChange={selectedLettersToChange}
+              setSelectedLettersToChange={setSelectedLettersToChange}
+              changingLetters={changingLetters}
             />
           );
         })}

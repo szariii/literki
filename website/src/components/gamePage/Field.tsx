@@ -21,6 +21,7 @@ const Field = ({
   lettersInHand,
   setLettersInHand,
   setSelectedLetter,
+  
 }: Field) => {
   const game = useSelector((state: RootState) => state.gameData);
   let point = ""
