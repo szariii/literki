@@ -40,9 +40,17 @@ export const userDataSlicer = createSlice({
             state.password=initialState.password
             state.points=initialState.points
             state.email=initialState.email
+        },
+
+        win:(state)=>{
+            state.points=state.points+10
+        },
+
+        lose:(state)=>{
+            state.points=state.points-10
         }
     }
 })
 
-export const {add, remove} = userDataSlicer.actions
+export const {add, remove, win, lose} = userDataSlicer.actions
 export default userDataSlicer.reducer

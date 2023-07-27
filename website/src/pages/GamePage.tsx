@@ -6,18 +6,21 @@ import {
   GameSendInformation,
   LetterInHandInterface,
 } from "../interfaces";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { io } from "socket.io-client";
 import settings from "../settings.json";
 import LetterInHand from "../components/gamePage/LetterInHand";
 import letters from "../data/letters";
 import MainGameLogic from "../components/gamePage/MainGameLogic";
+import EndGameComponent from "../components/gamePage/EndGameComponent";
+import { win, lose } from "../redux/slicers/userData";
 
 const GamePage = () => {
   //console.log('hl')
   const game = useSelector((state: RootState) => state.gameData);
   const user = useSelector((state: RootState) => state.userData);
+  const dispatch = useDispatch()
   const [changingLetters, setChangingLetters] = useState(false);
   const [putedLettersOnBoard, setPutedLettersOnBoard] = useState(false);
   const [playLetters, setPlayLetters] = useState(false);
@@ -26,6 +29,7 @@ const GamePage = () => {
     number[]
   >([]);
   const [enemyMove,setEnemyMove] = useState("")
+  const [dataEndGameComponent,setDataEndGameComponent]=useState({show:false, result:""})
 
   const URL = settings.socketAddress;
   const socket = io(URL, {
@@ -82,7 +86,21 @@ const GamePage = () => {
 
 
       if(data.msg==="player1"||data.msg==="player2"||data.msg==="draw"){
-
+        if(data.msg!=="draw"){
+          const winnerId = game[data.msg].id
+          if(winnerId===user._id){
+            //win
+            dispatch(win)
+            setDataEndGameComponent({...dataEndGameComponent, show:true, result:"win"})
+          }else{
+            //lose
+            dispatch(lose)
+            setDataEndGameComponent({...dataEndGameComponent, show:true, result:"lose"})
+          }
+        }else{
+          //draw
+          setDataEndGameComponent({...dataEndGameComponent, show:true, result:"draw"})
+        }
       }else{
         setEnemyMove(data.msg)
 
@@ -314,6 +332,7 @@ const GamePage = () => {
           );
         })}
       </div>
+      {dataEndGameComponent.show?<EndGameComponent result={dataEndGameComponent.result} gameSendInformation={gameSendInformation} />:""}
     </div>
   );
 };
