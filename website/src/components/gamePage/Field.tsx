@@ -121,14 +121,7 @@ interface Field {
   gameLogic: Function;
   gameSendInformation: GameSendInformation;
   playLetters: boolean;
-  setGameSendInformation: React.Dispatch<
-    React.SetStateAction<{
-      board: FieldInfo[][];
-      player1: number;
-      player2: number;
-      letters: number;
-    }>
-  >;
+  setGameSendInformation: React.Dispatch<React.SetStateAction<GameSendInformation>>
   selectedLetter: number;
   lettersInHand: LetterInHandInterface[];
   setLettersInHand: React.Dispatch<

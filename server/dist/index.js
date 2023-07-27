@@ -12,10 +12,16 @@ const creatingGames_1 = __importDefault(require("./src/helpingFunctions/creating
 const mainSocketIo_1 = __importDefault(require("./src/socketIo/mainSocketIo"));
 const app = (0, express_1.default)();
 const port = 3000;
-const socketIo = new socket_io_1.Server(3001, {
+// const io = require("socket.io")(3001, {cors:{
+//   origin:"*"
+// },
+//   wsEngine:"ws"
+// })
+//const httpServer = createServer()
+const io = new socket_io_1.Server(3001, {
     cors: {
         origin: "*"
-    }
+    },
 });
 setInterval(creatingGames_1.default, 1000);
 app.use(body_parser_1.default.json());
@@ -25,7 +31,7 @@ app.use(body_parser_1.default.urlencoded({
 app.use((0, cors_1.default)({
     origin: "http://localhost:5173",
 }));
-socketIo.on("connection", (socket) => (0, mainSocketIo_1.default)(socket, socketIo));
+io.on("connection", (socket) => (0, mainSocketIo_1.default)(socket, io));
 app.use(routes_1.default);
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

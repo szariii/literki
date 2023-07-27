@@ -47,7 +47,8 @@ const creatingGames = () => {
       id: id,
       player1:{ id: player1.id,nick:player1.nick },
       player2:{ id: player2.id,nick:player2.nick },
-      bonusPlaces:bonusPlaces
+      bonusPlaces:bonusPlaces,
+      movingSide:player1.id
     });
     console.log(tableWithPlayingRooms)
   }

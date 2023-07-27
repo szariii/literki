@@ -48,4 +48,6 @@ export interface GameSendInformation{
   player1: number;
   player2: number;
   letters: number;
+  movingSide:string
+  players:string[]
 }

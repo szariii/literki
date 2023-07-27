@@ -25,6 +25,7 @@ const GamePage = () => {
   const [selectedLettersToChange, setSelectedLettersToChange] = useState<
     number[]
   >([]);
+  const [enemyMove,setEnemyMove] = useState("")
 
   const URL = settings.socketAddress;
   const socket = io(URL, {
@@ -37,25 +38,6 @@ const GamePage = () => {
     console.log(value);
   }
 
-  useEffect(() => {
-    socket.on("send", (data: { room: string; data: GameSendInformation }) => {
-      console.log("data", data);
-      const newData = data.data;
-      setGameSendInformation({
-        ...gameSendInformation,
-        board: newData.board,
-        letters: newData.letters,
-        player1: newData.player1,
-        player2: newData.player2,
-      });
-    });
-
-    return () => {
-      socket.off("disconnect", data);
-      socket.off("send", data);
-    };
-  }, []);
-
   const tab: FieldInfo[][] = [];
   for (let i = 0; i < 15; i++) {
     const row = [];
@@ -67,18 +49,56 @@ const GamePage = () => {
 
   let startFlag = true;
   let player: "player1" | "player2" = "player1";
+  let playerId = game.player1.id;
   if (game.player2.id === user._id) {
     startFlag = false;
     player = "player2";
+    playerId = game.player2.id;
   }
 
   const [yourTurn, setYourTurn] = useState(startFlag);
-  const [gameSendInformation, setGameSendInformation] = useState({
-    board: tab,
-    player1: 0,
-    player2: 0,
-    letters: 86,
-  });
+  const [gameSendInformation, setGameSendInformation] =
+    useState<GameSendInformation>({
+      board: tab,
+      player1: 0,
+      player2: 0,
+      letters: 86,
+      movingSide: playerId,
+      players: [game.player1.id, game.player2.id],
+    });
+
+  useEffect(() => {
+    socket.on("send", (data: { room: string, data: GameSendInformation, msg:string }) => {
+      console.log("data", data);
+      const newData = data.data;
+      setGameSendInformation({
+        ...gameSendInformation,
+        board: newData.board,
+        letters: newData.letters,
+        player1: newData.player1,
+        player2: newData.player2,
+        movingSide: newData.movingSide,
+      });
+
+
+      if(data.msg==="player1"||data.msg==="player2"||data.msg==="draw"){
+        
+      }else{
+        setEnemyMove(data.msg)
+
+        if (newData.movingSide === playerId) {
+          setYourTurn(true);
+        }
+      }
+
+
+    });
+
+    return () => {
+      socket.off("disconnect", data);
+      socket.off("send", data);
+    };
+  }, []);
 
   const getRandomInt = (max: number) => {
     return Math.floor(Math.random() * max);
@@ -144,7 +164,6 @@ const GamePage = () => {
     let temporarySendInfo = gameSendInformation;
     console.log(gameSendInformation);
     console.log(addPoints);
-    console.log("emit");
     temporarySendInfo[player] = gameSendInformation[player] + addPoints;
     temporarySendInfo.board.map((row) => {
       row.map((letter) => {
@@ -157,7 +176,9 @@ const GamePage = () => {
     temporarySendInfo = addLettersToHand(temporarySendInfo);
     setGameSendInformation(temporarySendInfo);
     setAddPoints(0);
-    socket.emit("send", { room: game.id, data: temporarySendInfo });
+    setPutedLettersOnBoard(false);
+    setYourTurn(false);
+    socket.emit("send", { room: game.id, data: temporarySendInfo,msg:"Created word" });
   };
 
   const changeLetters = () => {
@@ -182,9 +203,21 @@ const GamePage = () => {
     console.log(temporarylettersInHand);
     setSelectedLettersToChange([]);
     setLettersInHand(temporarylettersInHand);
-
-    socket.emit("send", { room: game.id, data: gameSendInformation });
+    setChangingLetters(false);
+    setPutedLettersOnBoard(false);
+    setYourTurn(false);
+    socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Changed letters" });
   };
+
+  const skipTour=()=>{
+    if(enemyMove==="Skiped letters"){
+      socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Finish game" });
+    }else{
+      socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Skiped letters" });
+    }
+  }
+
+
 
   return (
     <div className="gamePage">
@@ -204,7 +237,7 @@ const GamePage = () => {
           <h4 className="gamePage__points">{gameSendInformation.player2}</h4>
         </div>
       </div>
-      {putedLettersOnBoard ? (
+      {putedLettersOnBoard && lettersInHand.length!==0 ? (
         ""
       ) : (
         <button
@@ -238,6 +271,8 @@ const GamePage = () => {
           add {addPoints} points
         </button>
       )}
+
+      {!changingLetters && !putedLettersOnBoard ? <button onClick={skipTour} >Pasuj</button> :""}
 
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>

@@ -25,6 +25,7 @@ export interface RoomInformation{
   player1:RoomPlayerInfo
   player2:RoomPlayerInfo
   bonusPlaces:Array<BonusPlace>
+  movingSide:string
 }
 
 export interface RoomPlayerInfo{
@@ -41,4 +42,20 @@ export interface BonusPlace{
 export interface LookingForGameUser{
   id:string
   nick:string
+}
+
+export interface FieldInfo {
+  letter: string;
+  empty: boolean;
+  i:number
+  j:number
+}
+
+export interface GameSendInformation{
+  board: FieldInfo[][];
+  player1: number;
+  player2: number;
+  letters: number;
+  movingSide:string
+  players:string[]
 }
