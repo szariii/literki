@@ -82,7 +82,7 @@ const GamePage = () => {
 
 
       if(data.msg==="player1"||data.msg==="player2"||data.msg==="draw"){
-        
+
       }else{
         setEnemyMove(data.msg)
 
@@ -212,8 +212,10 @@ const GamePage = () => {
   const skipTour=()=>{
     if(enemyMove==="Skiped letters"){
       socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Finish game" });
+      setYourTurn(false)
     }else{
       socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Skiped letters" });
+      setYourTurn(false)
     }
   }
 

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_config_1 = __importDefault(require("../config/db.config"));
-const query = (collection, operation, listing) => __awaiter(void 0, void 0, void 0, function* () {
+const query = (collection, operation, listing, updateField) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (operation === "insert") {
             const test = yield db_config_1.default.db("scrabble").collection(collection).insertOne(listing);
@@ -21,6 +21,10 @@ const query = (collection, operation, listing) => __awaiter(void 0, void 0, void
         }
         else if (operation === "find") {
             const test = yield db_config_1.default.db("scrabble").collection(collection).findOne(listing);
+            return test;
+        }
+        else if (operation === "update" && updateField) {
+            const test = yield db_config_1.default.db("scrabble").collection(collection).updateOne(updateField, listing);
             return test;
         }
     }

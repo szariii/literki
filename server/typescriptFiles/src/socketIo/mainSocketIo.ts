@@ -37,7 +37,7 @@ const mainSocketIo = (
         }
         changedMsg.msg=winner
         socketIo.to(roomName).emit("send", changedMsg);
-        gameWinner(data)
+        gameWinner(changedMsg)
       }else{
         socketIo.to(roomName).emit("send", changedMsg);
       }

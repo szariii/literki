@@ -34,7 +34,7 @@ const mainSocketIo = (socket, socketIo) => {
                 }
                 changedMsg.msg = winner;
                 socketIo.to(roomName).emit("send", changedMsg);
-                (0, gameWinner_1.default)(data);
+                (0, gameWinner_1.default)(changedMsg);
             }
             else {
                 socketIo.to(roomName).emit("send", changedMsg);
