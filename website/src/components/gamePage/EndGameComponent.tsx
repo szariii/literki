@@ -31,7 +31,7 @@ const EndGameComponent = ({
   }
 
   const buttonClickHandler=()=>{
-   dispatch(endGame)
+   dispatch(endGame())
    navigate("/main")
   }
 

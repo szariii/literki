@@ -20,7 +20,7 @@ const GamePage = () => {
   //console.log('hl')
   const game = useSelector((state: RootState) => state.gameData);
   const user = useSelector((state: RootState) => state.userData);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [changingLetters, setChangingLetters] = useState(false);
   const [putedLettersOnBoard, setPutedLettersOnBoard] = useState(false);
   const [playLetters, setPlayLetters] = useState(false);
@@ -28,8 +28,11 @@ const GamePage = () => {
   const [selectedLettersToChange, setSelectedLettersToChange] = useState<
     number[]
   >([]);
-  const [enemyMove,setEnemyMove] = useState("")
-  const [dataEndGameComponent,setDataEndGameComponent]=useState({show:false, result:""})
+  const [enemyMove, setEnemyMove] = useState("");
+  const [dataEndGameComponent, setDataEndGameComponent] = useState({
+    show: false,
+    result: "",
+  });
 
   const URL = settings.socketAddress;
   const socket = io(URL, {
@@ -72,45 +75,61 @@ const GamePage = () => {
     });
 
   useEffect(() => {
-    socket.on("send", (data: { room: string, data: GameSendInformation, msg:string }) => {
-      console.log("data", data);
-      const newData = data.data;
-      setGameSendInformation({
-        ...gameSendInformation,
-        board: newData.board,
-        letters: newData.letters,
-        player1: newData.player1,
-        player2: newData.player2,
-        movingSide: newData.movingSide,
-      });
+    socket.on(
+      "send",
+      (data: { room: string; data: GameSendInformation; msg: string }) => {
+        console.log("data", data);
+        const newData = data.data;
+        setGameSendInformation({
+          ...gameSendInformation,
+          board: newData.board,
+          letters: newData.letters,
+          player1: newData.player1,
+          player2: newData.player2,
+          movingSide: newData.movingSide,
+        });
 
-
-      if(data.msg==="player1"||data.msg==="player2"||data.msg==="draw"){
-        if(data.msg!=="draw"){
-          const winnerId = game[data.msg].id
-          if(winnerId===user._id){
-            //win
-            dispatch(win)
-            setDataEndGameComponent({...dataEndGameComponent, show:true, result:"win"})
-          }else{
-            //lose
-            dispatch(lose)
-            setDataEndGameComponent({...dataEndGameComponent, show:true, result:"lose"})
+        if (
+          data.msg === "player1" ||
+          data.msg === "player2" ||
+          data.msg === "draw"
+        ) {
+          if (data.msg !== "draw") {
+            const winnerId = game[data.msg].id;
+            if (winnerId === user._id) {
+              //win
+              dispatch(win());
+              setDataEndGameComponent({
+                ...dataEndGameComponent,
+                show: true,
+                result: "win",
+              });
+            } else {
+              //lose
+              dispatch(lose());
+              setDataEndGameComponent({
+                ...dataEndGameComponent,
+                show: true,
+                result: "lose",
+              });
+            }
+          } else {
+            //draw
+            setDataEndGameComponent({
+              ...dataEndGameComponent,
+              show: true,
+              result: "draw",
+            });
           }
-        }else{
-          //draw
-          setDataEndGameComponent({...dataEndGameComponent, show:true, result:"draw"})
-        }
-      }else{
-        setEnemyMove(data.msg)
+        } else {
+          setEnemyMove(data.msg);
 
-        if (newData.movingSide === playerId) {
-          setYourTurn(true);
+          if (newData.movingSide === playerId) {
+            setYourTurn(true);
+          }
         }
       }
-
-
-    });
+    );
 
     return () => {
       socket.off("disconnect", data);
@@ -196,48 +215,64 @@ const GamePage = () => {
     setAddPoints(0);
     setPutedLettersOnBoard(false);
     setYourTurn(false);
-    socket.emit("send", { room: game.id, data: temporarySendInfo,msg:"Created word" });
+    socket.emit("send", {
+      room: game.id,
+      data: temporarySendInfo,
+      msg: "Created word",
+    });
   };
 
   const changeLetters = () => {
-    let temporarylettersInHand = lettersInHand;
-    temporarylettersInHand = temporarylettersInHand.filter(
-      (ele) => selectedLettersToChange.includes(ele.id) === false
-    );
-    console.log(temporarylettersInHand);
-    while (temporarylettersInHand.length < 7) {
-      let maxIndex = 0;
-      temporarylettersInHand.map((ele) => {
-        if (maxIndex <= ele.id) {
-          maxIndex = ele.id + 1;
-        }
-      });
+    if (selectedLettersToChange.length > 0) {
+      let temporarylettersInHand = lettersInHand;
+      temporarylettersInHand = temporarylettersInHand.filter(
+        (ele) => selectedLettersToChange.includes(ele.id) === false
+      );
+      console.log(temporarylettersInHand);
+      while (temporarylettersInHand.length < 7) {
+        let maxIndex = 0;
+        temporarylettersInHand.map((ele) => {
+          if (maxIndex <= ele.id) {
+            maxIndex = ele.id + 1;
+          }
+        });
 
-      temporarylettersInHand.push({
-        letter: letters[getRandomInt(32)],
-        id: maxIndex,
+        temporarylettersInHand.push({
+          letter: letters[getRandomInt(32)],
+          id: maxIndex,
+        });
+      }
+      console.log(temporarylettersInHand);
+      setSelectedLettersToChange([]);
+      setLettersInHand(temporarylettersInHand);
+      setChangingLetters(false);
+      setPutedLettersOnBoard(false);
+      setYourTurn(false);
+      socket.emit("send", {
+        room: game.id,
+        data: gameSendInformation,
+        msg: "Changed letters",
       });
     }
-    console.log(temporarylettersInHand);
-    setSelectedLettersToChange([]);
-    setLettersInHand(temporarylettersInHand);
-    setChangingLetters(false);
-    setPutedLettersOnBoard(false);
-    setYourTurn(false);
-    socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Changed letters" });
   };
 
-  const skipTour=()=>{
-    if(enemyMove==="Skiped letters"){
-      socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Finish game" });
-      setYourTurn(false)
-    }else{
-      socket.emit("send", { room: game.id, data: gameSendInformation, msg:"Skiped letters" });
-      setYourTurn(false)
+  const skipTour = () => {
+    if (enemyMove === "Skiped letters") {
+      socket.emit("send", {
+        room: game.id,
+        data: gameSendInformation,
+        msg: "Finish game",
+      });
+      setYourTurn(false);
+    } else {
+      socket.emit("send", {
+        room: game.id,
+        data: gameSendInformation,
+        msg: "Skiped letters",
+      });
+      setYourTurn(false);
     }
-  }
-
-
+  };
 
   return (
     <div className="gamePage">
@@ -257,7 +292,7 @@ const GamePage = () => {
           <h4 className="gamePage__points">{gameSendInformation.player2}</h4>
         </div>
       </div>
-      {putedLettersOnBoard && lettersInHand.length!==0 ? (
+      {putedLettersOnBoard && lettersInHand.length !== 0 ? (
         ""
       ) : (
         <button
@@ -281,7 +316,7 @@ const GamePage = () => {
         </button>
       ) : (
         <button
-          onClick={playLetters ? sendData : () => {}}
+          onClick={playLetters && yourTurn ? sendData : () => {}}
           style={
             addPoints !== 0
               ? { backgroundColor: "green" }
@@ -292,8 +327,11 @@ const GamePage = () => {
         </button>
       )}
 
-      {!changingLetters && !putedLettersOnBoard ? <button onClick={skipTour} >Pasuj</button> :""}
-
+      {!changingLetters && !putedLettersOnBoard ? (
+        <button onClick={yourTurn ? skipTour : () => {}}>Pasuj</button>
+      ) : (
+        ""
+      )}
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>
           row.map((ele, j) => {
@@ -311,6 +349,7 @@ const GamePage = () => {
                 gameSendInformation={gameSendInformation}
                 playLetters={playLetters}
                 selectedLetter={selectedLetter}
+                yourTurn={yourTurn}
               />
             );
           })
@@ -332,7 +371,14 @@ const GamePage = () => {
           );
         })}
       </div>
-      {dataEndGameComponent.show?<EndGameComponent result={dataEndGameComponent.result} gameSendInformation={gameSendInformation} />:""}
+      {dataEndGameComponent.show ? (
+        <EndGameComponent
+          result={dataEndGameComponent.result}
+          gameSendInformation={gameSendInformation}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

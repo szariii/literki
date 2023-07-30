@@ -21,7 +21,7 @@ const Field = ({
   lettersInHand,
   setLettersInHand,
   setSelectedLetter,
-  
+  yourTurn
 }: Field) => {
   const game = useSelector((state: RootState) => state.gameData);
   let point = ""
@@ -101,7 +101,7 @@ const Field = ({
 
   return (
     <div
-      onClick={gameSendInformation.board[i][j].empty ? clickHandler : () => {}}
+      onClick={gameSendInformation.board[i][j].empty && yourTurn ? clickHandler : () => {}}
       className={`field${className}`}
     >
       <h4
@@ -128,4 +128,5 @@ interface Field {
     React.SetStateAction<LetterInHandInterface[]>
   >;
   setSelectedLetter: React.Dispatch<React.SetStateAction<number>>;
+  yourTurn:boolean
 }
