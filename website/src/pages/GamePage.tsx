@@ -292,10 +292,12 @@ const GamePage = () => {
           <h4 className="gamePage__points">{gameSendInformation.player2}</h4>
         </div>
       </div>
+      <div className="gamePage__buttons" >
       {putedLettersOnBoard && lettersInHand.length !== 0 ? (
         ""
       ) : (
         <button
+        className="gamePage__button"
           onClick={
             yourTurn
               ? !changingLetters
@@ -309,6 +311,7 @@ const GamePage = () => {
       )}
       {changingLetters ? (
         <button
+        className="gamePage__button"
           onClick={cancelChangeLettersHandler}
           style={{ backgroundColor: "red" }}
         >
@@ -316,6 +319,7 @@ const GamePage = () => {
         </button>
       ) : (
         <button
+        className="gamePage__button"
           onClick={playLetters && yourTurn ? sendData : () => {}}
           style={
             addPoints !== 0
@@ -328,10 +332,11 @@ const GamePage = () => {
       )}
 
       {!changingLetters && !putedLettersOnBoard ? (
-        <button onClick={yourTurn ? skipTour : () => {}}>Pasuj</button>
+        <button className="gamePage__button" onClick={yourTurn ? skipTour : () => {}}>Pasuj</button>
       ) : (
         ""
       )}
+      </div>
       <div className="gamePage__board">
         {gameSendInformation.board.map((row, i) =>
           row.map((ele, j) => {
