@@ -1,4 +1,4 @@
-import "../../style/mainPage/componentSizesVariables.scss";
+import "../../style/mainPage/_componentSizesVariables.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 

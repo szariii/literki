@@ -1,0 +1,14 @@
+@use "../variables" as *;
+
+.leaderboardPage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    background-color: $light-blue-color;
+
+    &__ranking{
+        min-width: 60%;
+    }
+}

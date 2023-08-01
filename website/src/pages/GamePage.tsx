@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../style/gamePage/gamePage.scss";
+import "../style/gamePage/_gamePage.scss";
 import Field from "../components/gamePage/Field";
 import {
   FieldInfo,

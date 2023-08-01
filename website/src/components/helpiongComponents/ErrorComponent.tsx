@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
-import "../../style/helpingComponents/errorComponent.scss";
+import "../../style/helpingComponents/_errorComponent.scss";
 import { MouseEventHandler } from "react";
 
 const ErrorComponent = ({header,onClickHandler}:ErrorComponent) => {

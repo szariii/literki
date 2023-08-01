@@ -20,6 +20,7 @@ const cancelFindGame_1 = __importDefault(require("../controllers/cancelFindGame"
 const checkForGame_1 = __importDefault(require("../controllers/checkForGame"));
 const getUserInfo_1 = __importDefault(require("../controllers/getUserInfo"));
 const checkWords_1 = __importDefault(require("../controllers/checkWords"));
+const leaderboard_1 = __importDefault(require("../controllers/leaderboard"));
 const routes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //console.log(req.url)
     try {
@@ -32,6 +33,9 @@ const routes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
                 else if (req.path === "/checkWords") {
                     console.log("tralala");
                     yield (0, checkWords_1.default)(req, res);
+                }
+                else if (req.path === "/leaderboard") {
+                    yield (0, leaderboard_1.default)(req, res);
                 }
                 break;
             case "POST":

@@ -8,6 +8,7 @@ import cancelFindGame from "../controllers/cancelFindGame";
 import checkForGame from "../controllers/checkForGame";
 import getUserData from "../controllers/getUserInfo";
 import checkWords from "../controllers/checkWords";
+import leaderboard from "../controllers/leaderboard";
 
 
 const routes = async(req: Request, res: Response, next: NextFunction) => {
@@ -21,6 +22,8 @@ const routes = async(req: Request, res: Response, next: NextFunction) => {
       }else if(req.path==="/checkWords"){
         console.log("tralala")
         await checkWords(req,res)
+      }else if(req.path==="/leaderboard"){
+        await leaderboard(req,res)
       }
       break;
     case "POST":

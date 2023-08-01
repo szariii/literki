@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-import "../../style/mainPage/lookingForGameComponent.scss";
+import "../../style/mainPage/_lookingForGameComponent.scss";
 import { useEffect } from "react";
 import axios from "axios";
 import settings from "../../settings.json";

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-import "../../style/helpingComponents/waitnigComponent.scss";
+import "../../style/helpingComponents/_waitnigComponent.scss";
 
 const WaitingComponent = ({header}:WaitingComponent) => {
   return (

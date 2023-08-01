@@ -1,6 +1,6 @@
 import { useSelector,useDispatch } from "react-redux";
 import { RootState } from "../../redux/store";
-import "../../style/gamePage/endGame.scss";
+import "../../style/gamePage/_endGame.scss";
 import { GameSendInformation } from "../../interfaces";
 import { endGame } from "../../redux/slicers/gameData";
 import { useNavigate} from "react-router-dom"

@@ -1,0 +1,24 @@
+@use "../variables" as *;
+
+.position{
+    display: flex;
+    background-color: $orange-color;
+    margin: 1rem;
+    border-radius: 20px;
+
+    &__placeText{
+        text-align: center;
+        width: 15%;
+    }
+
+    &__pointsText{
+        width: 15%;
+        text-align: center;
+        
+    }
+
+    &__nickText{
+        width: 70%;
+        text-align: center;
+    }
+}

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-import "../../style/helpingComponents/successComponent.scss";
+import "../../style/helpingComponents/_successComponent.scss";
 import { MouseEventHandler } from "react";
 
 const SuccessComponent = ({header,onClickHandler}:SuccessComponent) => {

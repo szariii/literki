@@ -1,4 +1,4 @@
-import "../../style/gamePage/letterInHand.scss";
+import "../../style/gamePage/_letterInHand.scss";
 import pointsForData from "../../data/pointsForData";
 
 

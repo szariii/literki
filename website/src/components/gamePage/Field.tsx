@@ -3,7 +3,7 @@ import {
   GameSendInformation,
   LetterInHandInterface,
 } from "../../interfaces";
-import "../../style/gamePage/field.scss";
+import "../../style/gamePage/_field.scss";
 import pointsForData from "../../data/pointsForData";
 
 import {useState,useEffect} from "react"

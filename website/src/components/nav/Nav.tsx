@@ -38,7 +38,7 @@ const Nav = () => {
 
   return (
     <div className="navbar">
-      <h1 className="navbar__title">Literki</h1>
+      <h1 onClick={showLogout?()=>{navigate("/main")}:()=>{} } className="navbar__title">Literki</h1>
       {user._id === "0" && !showLogout ? (
         ""
       ) : (
