@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import GamePage from "./pages/GamePage";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import ProfilePage from "./pages/ProfilePage";
 
 //Components
 import Nav from "./components/nav/Nav";
@@ -67,6 +68,7 @@ const App = () => {
           <Route path="/main" element={<MainPage />} />
           <Route path="/game/:id" element={<GamePage/>}/>
           <Route path="/leaderboard" element={<LeaderboardPage/>}/>
+          <Route path="/profile" element={<ProfilePage/>}/>
         </Routes>
       </Router>
     </div>

@@ -24,7 +24,7 @@ const LeaderboardPage = () => {
   return (
     <div className="leaderboardPage" >
       {leaderboard.length === 0 ? (
-        <FontAwesomeIcon icon={faSpinner} spinPulse />
+        <FontAwesomeIcon icon={faSpinner} className="leaderboardPage__icon" spinPulse />
       ) : (
         <>
           <h2>Ranking</h2>

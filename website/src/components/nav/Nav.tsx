@@ -38,8 +38,8 @@ const Nav = () => {
 
   return (
     <div className="navbar">
-      <h1 onClick={showLogout?()=>{navigate("/main")}:()=>{} } className="navbar__title">Literki</h1>
-      {user._id === "0" && !showLogout ? (
+      <h1 onClick={location.pathname.split("/")[1]!=="game"?()=>{navigate("/main")}:()=>{} } className="navbar__title">Literki</h1>
+      {user._id === "0" || location.pathname.split("/")[1]==="game" ? (
         ""
       ) : (
         <button className="navbar__button" onClick={buttonClickhandler}>

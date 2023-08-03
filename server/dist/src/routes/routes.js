@@ -21,6 +21,7 @@ const checkForGame_1 = __importDefault(require("../controllers/checkForGame"));
 const getUserInfo_1 = __importDefault(require("../controllers/getUserInfo"));
 const checkWords_1 = __importDefault(require("../controllers/checkWords"));
 const leaderboard_1 = __importDefault(require("../controllers/leaderboard"));
+const changePassword_1 = __importDefault(require("../controllers/changePassword"));
 const routes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //console.log(req.url)
     try {
@@ -54,6 +55,12 @@ const routes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
                 }
                 else if (req.url === "/getUserData") {
                     yield (0, getUserInfo_1.default)(req, res);
+                }
+                break;
+            case "PUT":
+                console.log("PUT");
+                if (req.url === "/changePassword") {
+                    yield (0, changePassword_1.default)(req, res);
                 }
                 break;
         }

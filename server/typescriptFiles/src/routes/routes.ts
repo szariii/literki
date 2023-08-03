@@ -9,6 +9,7 @@ import checkForGame from "../controllers/checkForGame";
 import getUserData from "../controllers/getUserInfo";
 import checkWords from "../controllers/checkWords";
 import leaderboard from "../controllers/leaderboard";
+import changePassword from "../controllers/changePassword";
 
 
 const routes = async(req: Request, res: Response, next: NextFunction) => {
@@ -38,6 +39,12 @@ const routes = async(req: Request, res: Response, next: NextFunction) => {
         await cancelFindGame(req,res)
       }else if(req.url==="/getUserData"){
         await getUserData(req,res)
+      }
+      break
+    case "PUT":
+      console.log("PUT")
+      if(req.url==="/changePassword"){
+        await changePassword(req,res)
       }
       break
   }
