@@ -1,4 +1,5 @@
 @use "../variables" as *;
+@use "../breakpoints" as *;
 
 .endGame{
     position: absolute;
@@ -20,6 +21,10 @@
         height: 80%;
         border-radius: 20px;
         border: 10px solid white;
+
+        @media only screen and (max-width:$tablet){
+            width: 80%;
+        }
     }
 
     &__title{

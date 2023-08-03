@@ -52,7 +52,7 @@ const EndGameComponent = ({
           </div>
         </div>
         
-        <h3 style={{color:dataToShowOnComponent.fontColor}}>Masz teraz: {user.points} punktów</h3>
+        <h3 style={{color:dataToShowOnComponent.fontColor, textAlign:"center"}}>Masz teraz: {user.points} punktów</h3>
         <button onClick={buttonClickHandler} className="endGame__button" style={{backgroundColor:dataToShowOnComponent.fontColor, color:dataToShowOnComponent.mainColor}} >Wróć do głównej strony</button>
       </div>
     </div>
